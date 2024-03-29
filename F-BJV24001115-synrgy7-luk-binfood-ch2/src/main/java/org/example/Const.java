@@ -1,8 +1,5 @@
 package org.example;
 
-import java.util.Arrays;
-import java.util.List;
-
 public class Const {
     public static final String menuMessage =
                 """
@@ -15,7 +12,7 @@ public class Const {
                     6. Orak-arik Telur          |  8.000
                     7. Es Teh                   |  3.000
                     8. Es Jeruk                 |  3.000
-                                                        
+                    ------------------------------
                     00. Lihat pesanan dan bayar         
                     01. Keluar dan batalkan             """;
 
