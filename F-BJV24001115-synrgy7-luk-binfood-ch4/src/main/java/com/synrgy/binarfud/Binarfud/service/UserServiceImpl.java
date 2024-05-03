@@ -20,7 +20,7 @@ public class UserServiceImpl implements UserService {
     @Override
     public void insertUserProcedure(String username, String emailAddress, String password) {
         usersRepository.insertUserData(username, emailAddress, password);
-        log.info("User Data berhasil di-insert");
+        log.info("User Data successfully created");
     }
 
     @Override
@@ -36,8 +36,8 @@ public class UserServiceImpl implements UserService {
     public Users getUserByUsername(String username) {
         Optional<Users> user = usersRepository.findByUsername(username);
         if (user.isEmpty()) {
-            throw new RuntimeException();
-        }
+            throw new RuntimeException("data with username \""+username+"\" does not exist");
+        };
         return user.get();
     }
 
@@ -48,5 +48,17 @@ public class UserServiceImpl implements UserService {
             throw new RuntimeException();
         }
         return users;
+    }
+
+    @Override
+    public void hardDeleteUser(Users user) {
+        usersRepository.delete(user);
+    }
+
+    @Override
+    public Users updateUserData(Users user, String newUsername) {
+        user.setUsername(newUsername);
+        usersRepository.save(user);
+        return user;
     }
 }

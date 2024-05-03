@@ -12,4 +12,8 @@ public interface UserService {
     Users getUserByUsername(String username);
 
     List<Users> getUsersByUsernameLike(String s);
+
+    void hardDeleteUser(Users user);
+
+    Users updateUserData(Users user, String newUsername);
 }

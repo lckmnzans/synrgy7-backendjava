@@ -15,12 +15,14 @@ public class MainController {
     private UserService userService;
 
     public void init() {
-        testDb();
-//        showAllUsers();
+        createUser();
+        showAllUsers();
+        deleteUser("lckmnzans");
 //        showUserByUsername("lckmnzans");
+        updateUser("lckmnzans", "hckmnzans");
     }
 
-    public void testDb() {
+    public void createUser() {
         String username = "lckmnzans";
         String emailAddress = "lckmnzans@gmail";
         String password = "123";
@@ -30,16 +32,43 @@ public class MainController {
 
     public void showAllUsers() {
         List<Users> users = userService.getAllUsers();
-        users.forEach(user -> System.out.println("username :" + user.getUsername()));
+        if (users.isEmpty()) {
+            log.info("Belum ada user di database");
+        } else {
+            users.forEach(user -> System.out.println("username :" + user.getUsername()));
+        }
     }
 
     public void showUserByUsername(String username) {
-        Users user = userService.getUserByUsername(username);
-        System.out.println(user.getId() +" | "+ user.getUsername() +" | "+ user.getEmailAddress());
+        Users user;
+        try {
+            user = userService.getUserByUsername(username);
+            System.out.println(user.getId() +" | "+ user.getUsername() +" | "+ user.getEmailAddress());
+        } catch (RuntimeException e) {
+            log.warn(e.getLocalizedMessage());
+        }
     }
 
     public void showUsersByUsernameLike(String s) {
         List<Users> users = userService.getUsersByUsernameLike(s);
         users.forEach(user -> System.out.println(user.getId() +" | "+ user.getUsername() +" | "+ user.getEmailAddress()));
+    }
+
+    public void deleteUser(String username) {
+        Users user = userService.getUserByUsername(username);
+        userService.hardDeleteUser(user);
+    }
+
+    public void updateUser(String username, String newUsername) {
+        Users user;
+        try {
+            user = userService.getUserByUsername(username);
+            user = userService.updateUserData(user, newUsername);
+            System.out.println(username + " berhasil diupdate ke " + user.getUsername());
+        } catch (RuntimeException e) {
+            log.warn(e.getLocalizedMessage());
+            System.out.println(username + " gagal diupdate");
+        }
+
     }
 }
