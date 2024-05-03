@@ -24,6 +24,6 @@ public class Merchant {
 
     private boolean open = Boolean.FALSE;
 
-    @OneToMany(mappedBy = "merchant")
+    @OneToMany(mappedBy = "merchant", fetch = FetchType.EAGER)
     private List<Product> productList;
 }

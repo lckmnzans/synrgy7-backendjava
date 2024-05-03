@@ -28,7 +28,17 @@ public class MerchantController {
         merchantService.insertMerchant(merchant);
     }
 
-    public void showAllMerchant(@Nullable Boolean isOpen) {
+    public void showMerchantDetail(String merchantId) {
+        Merchant merchant;
+        try {
+            merchant = merchantService.getMerchantById(merchantId);
+            merchant.getProductList().forEach(product -> System.out.println(product.getProductName()));
+        } catch (RuntimeException e) {
+            log.warn(e.getLocalizedMessage());
+        }
+    }
+
+    public void showAllMerchants(@Nullable Boolean isOpen) {
         List<Merchant> merchantList;
 
         if (isOpen == null) {
@@ -44,11 +54,11 @@ public class MerchantController {
         }
     }
 
-    public void showAllMerchant() {
-        showAllMerchant(null);
+    public void showAllMerchants() {
+        showAllMerchants(null);
     }
 
-    public void editMerchantOpenStatus(String merchantId, boolean isOpened) {
+    public void editMerchantsOpenStatus(String merchantId, boolean isOpened) {
         Merchant merchant;
         try {
             merchant = merchantService.getMerchantById(merchantId);

@@ -8,14 +8,17 @@ import org.springframework.stereotype.Component;
 public class MainController {
     private final UserController userController;
     private final MerchantController merchantController;
+    private final ProductController productController;
 
-    public MainController(UserController userController, MerchantController merchantController) {
+    public MainController(UserController userController, MerchantController merchantController, ProductController productController) {
         this.userController = userController;
         this.merchantController = merchantController;
+        this.productController = productController;
     }
 
     public void init() {
-        userController.init();
-        merchantController.init();
+//        userController.test();
+//        merchantController.test();
+        productController.test();
     }
 }

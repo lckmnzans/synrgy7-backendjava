@@ -52,6 +52,7 @@ public class UserServiceImpl implements UserService {
     @Override
     public void hardDeleteUser(Users user) {
         usersRepository.delete(user);
+        log.info("Data with username \""+user.getUsername()+"\" is successfully deleted");
     }
 
     @Override

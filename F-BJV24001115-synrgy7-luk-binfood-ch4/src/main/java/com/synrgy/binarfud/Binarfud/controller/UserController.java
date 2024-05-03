@@ -16,17 +16,12 @@ public class UserController {
     private UserService userService;
 
     public void init() {
-        createUser();
-        showAllUsers();
+        createUser("Lukman Sanusi", "lckmnzans", "lckmnzans@gmail.com", "123");
+        createUser("Sou Hayakawa","sommthe", "sothes@mail.com", "110345");
     }
 
-    public void createUser() {
-        String name = "Lukman Sanusi";
-        String username = "lckmnzans";
-        String emailAddress = "lckmnzans@gmail";
-        String password = "123";
-        userService.insertUserProcedure(name, username, emailAddress, password);
-        userService.insertUserProcedure("Sou Hayakawa","sommthe", "sothes@mail.com", "110345");
+    public void createUser(String name, String username, String email, String pass) {
+        userService.insertUserProcedure(name, username, email, pass);
     }
 
     public void showAllUsers() {
@@ -38,7 +33,7 @@ public class UserController {
         }
     }
 
-    public void showUserByUsername(String username) {
+    public void showUserDetailByUsername(String username) {
         Users user;
         try {
             user = userService.getUserByUsername(username);
@@ -48,7 +43,7 @@ public class UserController {
         }
     }
 
-    public void showUsersByUsernameLike(String s) {
+    public void showUsersDetailByUsernameLike(String s) {
         List<Users> users = userService.getUsersByUsernameLike(s);
         users.forEach(user -> System.out.println(user.getId() +" | "+ user.getUsername() +" | "+ user.getEmailAddress()));
     }
@@ -58,12 +53,11 @@ public class UserController {
         userService.hardDeleteUser(user);
     }
 
-    public void updateUsername(String username, String newUsername) {
+    public void updateUser(String username, String newUsername) {
         Users user;
         try {
             user = userService.getUserByUsername(username);
-            user = userService.updateUserData(user, newUsername);
-            System.out.println(username + " berhasil diupdate ke " + user.getUsername());
+            userService.updateUserData(user, newUsername);
         } catch (RuntimeException e) {
             log.warn(e.getLocalizedMessage());
             System.out.println(username + " gagal diupdate");

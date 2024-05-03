@@ -69,5 +69,6 @@ public class MerchantServiceImpl implements MerchantService {
     @Override
     public void hardDeleteMerchant(Merchant merchant) {
         merchantRepository.delete(merchant);
+        log.info("Data with merchant name \""+merchant.getMerchantName()+"\" is successfully deleted");
     }
 }
