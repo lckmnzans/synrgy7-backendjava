@@ -61,4 +61,26 @@ public class OrderController {
                 .build();
         return orderDetail;
     }
+
+    public void showAllOrders() {
+        List<Order> orderList = orderService.getAllOrders();
+        orderList.forEach(order -> System.out.println(order.getId() +" | "+ order.getOrderTime() +" | "+ order.getUser().getUsername() +" | "+ order.getDestinationAddress()));
+    }
+
+    public void showAllOrdersByUser(String username) {
+        Users user = userService.getUserByUsername(username);
+        List<Order> orderList = orderService.getAllOrdersByUser(user);
+        orderList.forEach(order -> System.out.println(order.getId() +" | "+ order.getOrderTime() +" | "+ order.getUser().getUsername() +" | "+ order.getDestinationAddress()));
+    }
+
+    public void showOrderDetail(String orderId) {
+        Order order = orderService.getOrder(orderId);
+        order.getOrderDetailList().forEach(orderDetail -> System.out.println(orderDetail.getProduct().getProductName() +" | "+ orderDetail.getQuantity() +" | "+ orderDetail.getTotalPrice()));
+    }
+
+    public void editOrderStatus(String orderId, boolean completedStatus) {
+        Order order = orderService.getOrder(orderId);
+        order.setCompleted(completedStatus);
+        orderService.updateOrderStatus(order);
+    }
 }

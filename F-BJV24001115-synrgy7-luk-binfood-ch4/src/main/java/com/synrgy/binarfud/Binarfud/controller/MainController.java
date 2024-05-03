@@ -23,5 +23,6 @@ public class MainController {
 //        merchantController.test();
 //        productController.test();
 //        orderController.test();
+        orderController.showAllOrdersByUser("lckmnzans");
     }
 }

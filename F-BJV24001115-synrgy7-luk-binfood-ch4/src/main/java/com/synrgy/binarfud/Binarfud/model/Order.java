@@ -29,6 +29,6 @@ public class Order {
 
     private boolean completed;
 
-    @OneToMany(mappedBy = "order")
+    @OneToMany(mappedBy = "order", fetch = FetchType.EAGER)
     private List<OrderDetail> orderDetailList;
 }
