@@ -2,12 +2,11 @@ package com.synrgy.binarfud.Binarfud.service;
 
 import com.synrgy.binarfud.Binarfud.model.Users;
 import com.synrgy.binarfud.Binarfud.repository.UsersRepository;
-import java.util.Collections;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
+import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
 
@@ -18,8 +17,8 @@ public class UserServiceImpl implements UserService {
     UsersRepository usersRepository;
 
     @Override
-    public void insertUserProcedure(String username, String emailAddress, String password) {
-        usersRepository.insertUserData(username, emailAddress, password);
+    public void insertUserProcedure(String name, String username, String emailAddress, String password) {
+        usersRepository.insertUserData(name, username, emailAddress, password);
         log.info("User Data successfully created");
     }
 

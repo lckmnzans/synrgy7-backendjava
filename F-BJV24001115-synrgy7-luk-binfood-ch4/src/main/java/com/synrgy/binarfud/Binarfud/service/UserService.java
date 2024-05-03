@@ -5,7 +5,7 @@ import com.synrgy.binarfud.Binarfud.model.Users;
 import java.util.List;
 
 public interface UserService {
-    void insertUserProcedure(String username, String emailAddress, String password);
+    void insertUserProcedure(String name, String username, String emailAddress, String password);
 
     List<Users> getAllUsers();
 

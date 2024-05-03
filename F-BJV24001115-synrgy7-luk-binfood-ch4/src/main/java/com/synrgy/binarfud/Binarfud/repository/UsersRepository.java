@@ -13,7 +13,7 @@ import java.util.UUID;
 public interface UsersRepository extends JpaRepository<Users, UUID> {
 
     @Procedure(procedureName = "insert_user_data")
-    void insertUserData(String username, String emailAddress, String password);
+    void insertUserData(String name, String username, String emailAddress, String password);
 
     Optional<Users> findByUsername(String username);
 

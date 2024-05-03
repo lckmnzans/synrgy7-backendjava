@@ -22,7 +22,7 @@ public class Merchant {
 
     private String merchantLocation;
 
-    private boolean open;
+    private boolean open = Boolean.FALSE;
 
     @OneToMany(mappedBy = "merchant")
     private List<Product> productList;
