@@ -15,7 +15,7 @@ public class UserController {
     @Autowired
     private UserService userService;
 
-    public void init() {
+    public void test() {
         createUser("Lukman Sanusi", "lckmnzans", "lckmnzans@gmail.com", "123");
         createUser("Sou Hayakawa","sommthe", "sothes@mail.com", "110345");
     }

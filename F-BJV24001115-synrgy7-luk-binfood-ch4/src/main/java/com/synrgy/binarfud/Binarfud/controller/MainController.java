@@ -9,16 +9,19 @@ public class MainController {
     private final UserController userController;
     private final MerchantController merchantController;
     private final ProductController productController;
+    private final OrderController orderController;
 
-    public MainController(UserController userController, MerchantController merchantController, ProductController productController) {
+    public MainController(UserController userController, MerchantController merchantController, ProductController productController, OrderController orderController) {
         this.userController = userController;
         this.merchantController = merchantController;
         this.productController = productController;
+        this.orderController = orderController;
     }
 
     public void init() {
 //        userController.test();
 //        merchantController.test();
-        productController.test();
+//        productController.test();
+//        orderController.test();
     }
 }

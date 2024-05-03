@@ -15,7 +15,7 @@ public class MerchantController {
     @Autowired
     private MerchantService merchantService;
 
-    public void init() {
+    public void test() {
         createMerchant("Geprek Jago", "Jl Tj Sari VI No.29, Sumurboto, Banyumanik, Kota Semarang");
         createMerchant("Bakmi 99 Pak Joko", "Jl Sumur Boto Bar. III, Sumurboto, Banyumanik, Kota Semarang");
     }
