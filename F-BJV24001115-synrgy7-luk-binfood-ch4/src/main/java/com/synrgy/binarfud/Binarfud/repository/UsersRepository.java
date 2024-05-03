@@ -15,6 +15,12 @@ public interface UsersRepository extends JpaRepository<Users, UUID> {
     @Procedure(procedureName = "insert_user_data")
     void insertUserData(String name, String username, String emailAddress, String password);
 
+    @Procedure(procedureName = "delete_user_data")
+    void deleteUserData(UUID id);
+
+    @Procedure(procedureName = "update_user_username")
+    void updateUserUsername(UUID id, String username);
+
     Optional<Users> findByUsername(String username);
 
     List<Users> findByUsernameLike(String s);

@@ -8,6 +8,7 @@ import jakarta.annotation.Nullable;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
+import org.springframework.util.StopWatch;
 
 import java.util.List;
 
@@ -46,8 +47,12 @@ public class ProductController {
     }
 
     public void showProductsByMerchant(String merchantId) {
+        StopWatch sw = new StopWatch();
+        sw.start();
         Merchant merchant = merchantService.getMerchantById(merchantId);
         List<Product> products = merchant.getProductList();
+        sw.stop();
+        if (sw.getTotalTimeSeconds() > 2) log.warn("Proses berjalan > 2 detik");
         System.out.println("Produk dari merchant " + merchant.getMerchantName());
         products.forEach(product -> System.out.println(product.getProductName() + " | " + product.getPrice()));
     }
@@ -59,11 +64,11 @@ public class ProductController {
             try {
                 productService.updateProduct(product, newProductName, newPrice);
             } catch (RuntimeException e) {
-                log.warn(e.getLocalizedMessage());
+                log.error(e.getLocalizedMessage());
                 System.out.println("Update Product \""+product.getProductName()+"\" dari merchant \""+product.getMerchant().getMerchantName()+"\" dibatalkan");
             }
         } catch (RuntimeException e) {
-            log.warn(e.getLocalizedMessage());
+            log.error(e.getLocalizedMessage());
         }
     }
 
@@ -73,7 +78,7 @@ public class ProductController {
             product = productService.getProductById(productId);
             productService.deleteProduct(product);
         } catch (RuntimeException e) {
-            log.warn(e.getLocalizedMessage());
+            log.error(e.getLocalizedMessage());
         }
     }
 }

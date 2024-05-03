@@ -1,7 +1,6 @@
 package com.synrgy.binarfud.Binarfud.service;
 
 import com.synrgy.binarfud.Binarfud.model.Order;
-import com.synrgy.binarfud.Binarfud.model.OrderDetail;
 import com.synrgy.binarfud.Binarfud.model.Users;
 import com.synrgy.binarfud.Binarfud.repository.OrderRepository;
 import lombok.extern.slf4j.Slf4j;
@@ -29,6 +28,7 @@ public class OrderServiceImpl implements OrderService {
     public Order getOrder(String orderId) {
         UUID uuid = UUID.fromString(orderId);
         Optional<Order> order = orderRepository.findById(uuid);
+        if (order.isEmpty()) throw new RuntimeException();
         return order.get();
     }
 

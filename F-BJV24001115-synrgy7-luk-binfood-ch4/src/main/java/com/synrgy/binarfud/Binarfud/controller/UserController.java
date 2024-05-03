@@ -39,7 +39,7 @@ public class UserController {
             user = userService.getUserByUsername(username);
             System.out.println(user.getId() +" | "+ user.getUsername() +" | "+ user.getEmailAddress());
         } catch (RuntimeException e) {
-            log.warn(e.getLocalizedMessage());
+            log.error(e.getLocalizedMessage());
         }
     }
 
@@ -59,7 +59,7 @@ public class UserController {
             user = userService.getUserByUsername(username);
             userService.updateUserData(user, newUsername);
         } catch (RuntimeException e) {
-            log.warn(e.getLocalizedMessage());
+            log.error(e.getLocalizedMessage());
             System.out.println(username + " gagal diupdate");
         }
 

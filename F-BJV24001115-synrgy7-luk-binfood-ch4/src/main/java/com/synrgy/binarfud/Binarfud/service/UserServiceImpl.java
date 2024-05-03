@@ -51,14 +51,15 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public void hardDeleteUser(Users user) {
-        usersRepository.delete(user);
+        usersRepository.deleteUserData(user.getId());
         log.info("Data with username \""+user.getUsername()+"\" is successfully deleted");
     }
 
     @Override
     public Users updateUserData(Users user, String newUsername) {
+        usersRepository.updateUserUsername(user.getId(), newUsername);
+        log.info("Data with username \""+user.getUsername()+"\" is successfully changed to \""+newUsername+"\"");
         user.setUsername(newUsername);
-        usersRepository.save(user);
         return user;
     }
 }

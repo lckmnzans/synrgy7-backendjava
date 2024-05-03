@@ -1,6 +1,5 @@
 package com.synrgy.binarfud.Binarfud.service;
 
-import com.synrgy.binarfud.Binarfud.controller.ProductController;
 import com.synrgy.binarfud.Binarfud.model.Product;
 import com.synrgy.binarfud.Binarfud.repository.ProductRepository;
 import jakarta.annotation.Nullable;

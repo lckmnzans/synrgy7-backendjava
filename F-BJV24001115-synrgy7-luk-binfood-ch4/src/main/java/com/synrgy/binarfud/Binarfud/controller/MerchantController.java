@@ -34,7 +34,7 @@ public class MerchantController {
             merchant = merchantService.getMerchantById(merchantId);
             merchant.getProductList().forEach(product -> System.out.println(product.getProductName()));
         } catch (RuntimeException e) {
-            log.warn(e.getLocalizedMessage());
+            log.error(e.getLocalizedMessage());
         }
     }
 
@@ -65,7 +65,7 @@ public class MerchantController {
             merchant.setOpen(isOpened);
             merchantService.updateMerchant(merchant);
         } catch (RuntimeException e) {
-            log.warn(e.getLocalizedMessage());
+            log.error(e.getLocalizedMessage());
         }
     }
 
@@ -76,7 +76,7 @@ public class MerchantController {
             merchantService.hardDeleteMerchant(merchant);
             System.out.println("Operasi delete Merchant sukses");
         } catch (RuntimeException e) {
-            log.warn(e.getLocalizedMessage());
+            log.error(e.getLocalizedMessage());
             System.out.println("Operasi delete Merchant gagal");
         }
 

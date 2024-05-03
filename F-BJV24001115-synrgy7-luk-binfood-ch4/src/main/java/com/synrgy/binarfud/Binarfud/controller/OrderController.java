@@ -4,7 +4,10 @@ import com.synrgy.binarfud.Binarfud.model.Order;
 import com.synrgy.binarfud.Binarfud.model.OrderDetail;
 import com.synrgy.binarfud.Binarfud.model.Product;
 import com.synrgy.binarfud.Binarfud.model.Users;
-import com.synrgy.binarfud.Binarfud.service.*;
+import com.synrgy.binarfud.Binarfud.service.OrderDetailService;
+import com.synrgy.binarfud.Binarfud.service.OrderService;
+import com.synrgy.binarfud.Binarfud.service.ProductService;
+import com.synrgy.binarfud.Binarfud.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
