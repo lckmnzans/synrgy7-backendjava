@@ -33,14 +33,16 @@ public class UserController {
         }
     }
 
-    public void showUserDetailByUsername(String username) {
+    public Users showUserDetailByUsername(String username) {
         Users user;
         try {
             user = userService.getUserByUsername(username);
-            System.out.println(user.getId() +" | "+ user.getUsername() +" | "+ user.getEmailAddress());
+            log.info(user.getId() +" | "+ user.getUsername() +" | "+ user.getEmailAddress());
+            return user;
         } catch (RuntimeException e) {
             log.error(e.getLocalizedMessage());
         }
+        return null;
     }
 
     public void showUsersDetailByUsernameLike(String s) {

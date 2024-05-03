@@ -41,9 +41,10 @@ public class ProductController {
         productService.insertProduct(product);
     }
 
-    public void showAllProducts() {
+    public List<Product> showAllProducts() {
         List<Product> products = productService.getAllProducts();
-        products.forEach(product -> System.out.println(product.getProductName() + " | " + product.getPrice() + " | " + product.getMerchant().getMerchantName()));
+        products.forEach(product -> log.info(product.getProductName() + " | " + product.getPrice() + " | " + product.getMerchant().getMerchantName()));
+        return products;
     }
 
     public void showProductsByMerchant(String merchantId) {

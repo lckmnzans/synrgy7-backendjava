@@ -38,7 +38,7 @@ public class MerchantController {
         }
     }
 
-    public void showAllMerchants(@Nullable Boolean isOpen) {
+    public List<Merchant> showAllMerchants(@Nullable Boolean isOpen) {
         List<Merchant> merchantList;
 
         if (isOpen == null) {
@@ -50,8 +50,9 @@ public class MerchantController {
         if (merchantList.isEmpty()) {
             System.out.println("Merchant tidak ditemukan");
         } else {
-            merchantList.forEach(merchant -> System.out.println("Merchant name :" + merchant.getMerchantName()));
+            merchantList.forEach(merchant -> log.info("Merchant name :" + merchant.getMerchantName()));
         }
+        return merchantList;
     }
 
     public void showAllMerchants() {

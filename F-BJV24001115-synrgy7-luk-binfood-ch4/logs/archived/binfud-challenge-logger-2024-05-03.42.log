@@ -1,0 +1,94 @@
+2024-05-03 23:26:33,438 INFO o.s.b.StartupInfoLogger [main] Starting BinarfudChallengeApplication using Java 21.0.2 with PID 87816 (/home/lckmnzans/Documents/projects/Java Projects/synrgy7-backendjava/F-BJV24001115-synrgy7-luk-binfood-ch4/target/classes started by lckmnzans in /home/lckmnzans/Documents/projects/Java Projects/synrgy7-backendjava/F-BJV24001115-synrgy7-luk-binfood-ch4)
+2024-05-03 23:26:33,441 INFO o.s.b.SpringApplication [main] No active profile set, falling back to 1 default profile: "default"
+2024-05-03 23:26:33,992 INFO o.s.d.r.c.RepositoryConfigurationDelegate [main] Bootstrapping Spring Data JPA repositories in DEFAULT mode.
+2024-05-03 23:26:34,049 INFO o.s.d.r.c.RepositoryConfigurationDelegate [main] Finished Spring Data repository scanning in 50 ms. Found 5 JPA repository interfaces.
+2024-05-03 23:26:34,445 INFO o.s.b.w.e.t.TomcatWebServer [main] Tomcat initialized with port 8080 (http)
+2024-05-03 23:26:34,454 INFO o.a.j.l.DirectJDKLog [main] Initializing ProtocolHandler ["http-nio-8080"]
+2024-05-03 23:26:34,456 INFO o.a.j.l.DirectJDKLog [main] Starting service [Tomcat]
+2024-05-03 23:26:34,456 INFO o.a.j.l.DirectJDKLog [main] Starting Servlet engine: [Apache Tomcat/10.1.20]
+2024-05-03 23:26:34,490 INFO o.a.j.l.DirectJDKLog [main] Initializing Spring embedded WebApplicationContext
+2024-05-03 23:26:34,491 INFO o.s.b.w.s.c.ServletWebServerApplicationContext [main] Root WebApplicationContext: initialization completed in 1003 ms
+2024-05-03 23:26:34,622 INFO o.h.j.i.u.LogHelper [main] HHH000204: Processing PersistenceUnitInfo [name: default]
+2024-05-03 23:26:34,662 INFO o.h.Version [main] HHH000412: Hibernate ORM core version 6.4.4.Final
+2024-05-03 23:26:34,689 INFO o.h.c.i.RegionFactoryInitiator [main] HHH000026: Second-level cache disabled
+2024-05-03 23:26:34,872 INFO o.s.o.j.p.SpringPersistenceUnitInfo [main] No LoadTimeWeaver setup: ignoring JPA class transformer
+2024-05-03 23:26:34,893 INFO c.z.h.HikariDataSource [main] HikariPool-1 - Starting...
+2024-05-03 23:26:35,151 INFO c.z.h.p.HikariPool [main] HikariPool-1 - Added connection org.postgresql.jdbc.PgConnection@54bb1194
+2024-05-03 23:26:35,153 INFO c.z.h.HikariDataSource [main] HikariPool-1 - Start completed.
+2024-05-03 23:26:35,179 WARN o.h.e.j.d.i.DialectFactoryImpl [main] HHH90000025: PostgreSQLDialect does not need to be specified explicitly using 'hibernate.dialect' (remove the property setting and it will be selected by default)
+2024-05-03 23:26:35,952 INFO o.h.e.t.j.p.i.JtaPlatformInitiator [main] HHH000489: No JTA platform available (set 'hibernate.transaction.jta.platform' to enable JTA platform integration)
+2024-05-03 23:26:36,082 INFO o.s.o.j.AbstractEntityManagerFactoryBean [main] Initialized JPA EntityManagerFactory for persistence unit 'default'
+2024-05-03 23:26:36,419 INFO o.s.d.j.r.q.QueryEnhancerFactory [main] Hibernate is in classpath; If applicable, HQL parser will be used.
+2024-05-03 23:26:36,462 WARN o.s.b.a.o.j.JpaBaseConfiguration$JpaWebConfiguration [main] spring.jpa.open-in-view is enabled by default. Therefore, database queries may be performed during view rendering. Explicitly configure spring.jpa.open-in-view to disable this warning
+2024-05-03 23:26:36,761 INFO o.a.j.l.DirectJDKLog [main] Starting ProtocolHandler ["http-nio-8080"]
+2024-05-03 23:26:36,772 INFO o.s.b.w.e.t.TomcatWebServer [main] Tomcat started on port 8080 (http) with context path ''
+2024-05-03 23:26:36,780 INFO o.s.b.StartupInfoLogger [main] Started BinarfudChallengeApplication in 3.822 seconds (process running for 4.333)
+2024-05-03 23:26:36,904 INFO c.s.b.B.c.UserController [main] d4adc60e-ac01-4703-b47a-e9265d4a8dc6 | lckmnzans | lckmnzans@gmail.com
+2024-05-03 23:26:42,144 INFO o.s.o.j.AbstractEntityManagerFactoryBean [SpringApplicationShutdownHook] Closing JPA EntityManagerFactory for persistence unit 'default'
+2024-05-03 23:26:42,146 INFO c.z.h.HikariDataSource [SpringApplicationShutdownHook] HikariPool-1 - Shutdown initiated...
+2024-05-03 23:26:42,158 INFO c.z.h.HikariDataSource [SpringApplicationShutdownHook] HikariPool-1 - Shutdown completed.
+2024-05-03 23:30:31,823 INFO o.s.b.StartupInfoLogger [main] Starting BinarfudChallengeApplication using Java 21.0.2 with PID 88206 (/home/lckmnzans/Documents/projects/Java Projects/synrgy7-backendjava/F-BJV24001115-synrgy7-luk-binfood-ch4/target/classes started by lckmnzans in /home/lckmnzans/Documents/projects/Java Projects/synrgy7-backendjava/F-BJV24001115-synrgy7-luk-binfood-ch4)
+2024-05-03 23:30:31,826 INFO o.s.b.SpringApplication [main] No active profile set, falling back to 1 default profile: "default"
+2024-05-03 23:30:32,360 INFO o.s.d.r.c.RepositoryConfigurationDelegate [main] Bootstrapping Spring Data JPA repositories in DEFAULT mode.
+2024-05-03 23:30:32,426 INFO o.s.d.r.c.RepositoryConfigurationDelegate [main] Finished Spring Data repository scanning in 59 ms. Found 5 JPA repository interfaces.
+2024-05-03 23:30:32,847 INFO o.s.b.w.e.t.TomcatWebServer [main] Tomcat initialized with port 8080 (http)
+2024-05-03 23:30:32,856 INFO o.a.j.l.DirectJDKLog [main] Initializing ProtocolHandler ["http-nio-8080"]
+2024-05-03 23:30:32,858 INFO o.a.j.l.DirectJDKLog [main] Starting service [Tomcat]
+2024-05-03 23:30:32,858 INFO o.a.j.l.DirectJDKLog [main] Starting Servlet engine: [Apache Tomcat/10.1.20]
+2024-05-03 23:30:32,892 INFO o.a.j.l.DirectJDKLog [main] Initializing Spring embedded WebApplicationContext
+2024-05-03 23:30:32,893 INFO o.s.b.w.s.c.ServletWebServerApplicationContext [main] Root WebApplicationContext: initialization completed in 1017 ms
+2024-05-03 23:30:33,018 INFO o.h.j.i.u.LogHelper [main] HHH000204: Processing PersistenceUnitInfo [name: default]
+2024-05-03 23:30:33,054 INFO o.h.Version [main] HHH000412: Hibernate ORM core version 6.4.4.Final
+2024-05-03 23:30:33,080 INFO o.h.c.i.RegionFactoryInitiator [main] HHH000026: Second-level cache disabled
+2024-05-03 23:30:33,262 INFO o.s.o.j.p.SpringPersistenceUnitInfo [main] No LoadTimeWeaver setup: ignoring JPA class transformer
+2024-05-03 23:30:33,284 INFO c.z.h.HikariDataSource [main] HikariPool-1 - Starting...
+2024-05-03 23:30:33,539 INFO c.z.h.p.HikariPool [main] HikariPool-1 - Added connection org.postgresql.jdbc.PgConnection@46c662f2
+2024-05-03 23:30:33,540 INFO c.z.h.HikariDataSource [main] HikariPool-1 - Start completed.
+2024-05-03 23:30:33,570 WARN o.h.e.j.d.i.DialectFactoryImpl [main] HHH90000025: PostgreSQLDialect does not need to be specified explicitly using 'hibernate.dialect' (remove the property setting and it will be selected by default)
+2024-05-03 23:30:34,362 INFO o.h.e.t.j.p.i.JtaPlatformInitiator [main] HHH000489: No JTA platform available (set 'hibernate.transaction.jta.platform' to enable JTA platform integration)
+2024-05-03 23:30:34,463 INFO o.s.o.j.AbstractEntityManagerFactoryBean [main] Initialized JPA EntityManagerFactory for persistence unit 'default'
+2024-05-03 23:30:34,766 INFO o.s.d.j.r.q.QueryEnhancerFactory [main] Hibernate is in classpath; If applicable, HQL parser will be used.
+2024-05-03 23:30:34,806 WARN o.s.b.a.o.j.JpaBaseConfiguration$JpaWebConfiguration [main] spring.jpa.open-in-view is enabled by default. Therefore, database queries may be performed during view rendering. Explicitly configure spring.jpa.open-in-view to disable this warning
+2024-05-03 23:30:35,084 INFO o.a.j.l.DirectJDKLog [main] Starting ProtocolHandler ["http-nio-8080"]
+2024-05-03 23:30:35,093 INFO o.s.b.w.e.t.TomcatWebServer [main] Tomcat started on port 8080 (http) with context path ''
+2024-05-03 23:30:35,101 INFO o.s.b.StartupInfoLogger [main] Started BinarfudChallengeApplication in 3.793 seconds (process running for 4.373)
+2024-05-03 23:30:35,236 INFO c.s.b.B.c.UserController [main] d4adc60e-ac01-4703-b47a-e9265d4a8dc6 | lckmnzans | lckmnzans@gmail.com
+2024-05-03 23:30:36,907 INFO c.s.b.B.c.ProductController [main] Geprek Bakar | 10000.0 | Geprek Jago
+2024-05-03 23:30:36,907 INFO c.s.b.B.c.ProductController [main] Bakmi goreng | 14000.0 | Bakmi 99 Pak Joko
+2024-05-03 23:30:36,907 INFO c.s.b.B.c.ProductController [main] Bakmi rebus | 14000.0 | Bakmi 99 Pak Joko
+2024-05-03 23:30:36,907 INFO c.s.b.B.c.ProductController [main] Nasi goreng ayam | 13000.0 | Bakmi 99 Pak Joko
+2024-05-03 23:30:36,907 INFO c.s.b.B.c.ProductController [main] Geprek Mozarella | 10000.0 | Geprek Jago
+2024-05-03 23:36:09,848 INFO o.s.o.j.AbstractEntityManagerFactoryBean [SpringApplicationShutdownHook] Closing JPA EntityManagerFactory for persistence unit 'default'
+2024-05-03 23:36:09,850 INFO c.z.h.HikariDataSource [SpringApplicationShutdownHook] HikariPool-1 - Shutdown initiated...
+2024-05-03 23:36:09,864 INFO c.z.h.HikariDataSource [SpringApplicationShutdownHook] HikariPool-1 - Shutdown completed.
+2024-05-03 23:36:13,682 INFO o.s.b.StartupInfoLogger [main] Starting BinarfudChallengeApplication using Java 21.0.2 with PID 88591 (/home/lckmnzans/Documents/projects/Java Projects/synrgy7-backendjava/F-BJV24001115-synrgy7-luk-binfood-ch4/target/classes started by lckmnzans in /home/lckmnzans/Documents/projects/Java Projects/synrgy7-backendjava/F-BJV24001115-synrgy7-luk-binfood-ch4)
+2024-05-03 23:36:13,685 INFO o.s.b.SpringApplication [main] No active profile set, falling back to 1 default profile: "default"
+2024-05-03 23:36:14,225 INFO o.s.d.r.c.RepositoryConfigurationDelegate [main] Bootstrapping Spring Data JPA repositories in DEFAULT mode.
+2024-05-03 23:36:14,293 INFO o.s.d.r.c.RepositoryConfigurationDelegate [main] Finished Spring Data repository scanning in 63 ms. Found 5 JPA repository interfaces.
+2024-05-03 23:36:14,677 INFO o.s.b.w.e.t.TomcatWebServer [main] Tomcat initialized with port 8080 (http)
+2024-05-03 23:36:14,686 INFO o.a.j.l.DirectJDKLog [main] Initializing ProtocolHandler ["http-nio-8080"]
+2024-05-03 23:36:14,687 INFO o.a.j.l.DirectJDKLog [main] Starting service [Tomcat]
+2024-05-03 23:36:14,688 INFO o.a.j.l.DirectJDKLog [main] Starting Servlet engine: [Apache Tomcat/10.1.20]
+2024-05-03 23:36:14,721 INFO o.a.j.l.DirectJDKLog [main] Initializing Spring embedded WebApplicationContext
+2024-05-03 23:36:14,721 INFO o.s.b.w.s.c.ServletWebServerApplicationContext [main] Root WebApplicationContext: initialization completed in 983 ms
+2024-05-03 23:36:14,848 INFO o.h.j.i.u.LogHelper [main] HHH000204: Processing PersistenceUnitInfo [name: default]
+2024-05-03 23:36:14,886 INFO o.h.Version [main] HHH000412: Hibernate ORM core version 6.4.4.Final
+2024-05-03 23:36:14,914 INFO o.h.c.i.RegionFactoryInitiator [main] HHH000026: Second-level cache disabled
+2024-05-03 23:36:15,086 INFO o.s.o.j.p.SpringPersistenceUnitInfo [main] No LoadTimeWeaver setup: ignoring JPA class transformer
+2024-05-03 23:36:15,106 INFO c.z.h.HikariDataSource [main] HikariPool-1 - Starting...
+2024-05-03 23:36:15,357 INFO c.z.h.p.HikariPool [main] HikariPool-1 - Added connection org.postgresql.jdbc.PgConnection@67fac095
+2024-05-03 23:36:15,358 INFO c.z.h.HikariDataSource [main] HikariPool-1 - Start completed.
+2024-05-03 23:36:15,390 WARN o.h.e.j.d.i.DialectFactoryImpl [main] HHH90000025: PostgreSQLDialect does not need to be specified explicitly using 'hibernate.dialect' (remove the property setting and it will be selected by default)
+2024-05-03 23:36:16,158 INFO o.h.e.t.j.p.i.JtaPlatformInitiator [main] HHH000489: No JTA platform available (set 'hibernate.transaction.jta.platform' to enable JTA platform integration)
+2024-05-03 23:36:16,282 INFO o.s.o.j.AbstractEntityManagerFactoryBean [main] Initialized JPA EntityManagerFactory for persistence unit 'default'
+2024-05-03 23:36:16,594 INFO o.s.d.j.r.q.QueryEnhancerFactory [main] Hibernate is in classpath; If applicable, HQL parser will be used.
+2024-05-03 23:36:16,639 WARN o.s.b.a.o.j.JpaBaseConfiguration$JpaWebConfiguration [main] spring.jpa.open-in-view is enabled by default. Therefore, database queries may be performed during view rendering. Explicitly configure spring.jpa.open-in-view to disable this warning
+2024-05-03 23:36:16,923 INFO o.a.j.l.DirectJDKLog [main] Starting ProtocolHandler ["http-nio-8080"]
+2024-05-03 23:36:16,940 INFO o.s.b.w.e.t.TomcatWebServer [main] Tomcat started on port 8080 (http) with context path ''
+2024-05-03 23:36:16,949 INFO o.s.b.StartupInfoLogger [main] Started BinarfudChallengeApplication in 3.784 seconds (process running for 4.526)
+2024-05-03 23:36:17,074 INFO c.s.b.B.c.UserController [main] d4adc60e-ac01-4703-b47a-e9265d4a8dc6 | lckmnzans | lckmnzans@gmail.com
+2024-05-03 23:36:18,923 INFO c.s.b.B.c.ProductController [main] Geprek Bakar | 10000.0 | Geprek Jago
+2024-05-03 23:36:18,923 INFO c.s.b.B.c.ProductController [main] Bakmi goreng | 14000.0 | Bakmi 99 Pak Joko
+2024-05-03 23:36:18,923 INFO c.s.b.B.c.ProductController [main] Bakmi rebus | 14000.0 | Bakmi 99 Pak Joko
+2024-05-03 23:36:18,923 INFO c.s.b.B.c.ProductController [main] Nasi goreng ayam | 13000.0 | Bakmi 99 Pak Joko
+2024-05-03 23:36:18,923 INFO c.s.b.B.c.ProductController [main] Geprek Mozarella | 10000.0 | Geprek Jago

@@ -24,6 +24,11 @@ public class OrderDetailServiceImpl implements OrderDetailService {
     }
 
     @Override
+    public List<OrderDetail> getAllOrdersDetail() {
+        return orderDetailRepository.fetchAllOrderDetail();
+    }
+
+    @Override
     public List<OrderDetail> getAllOrdersDetailPageable(int pageNumber, int pageAmount) {
         Pageable pageable = PageRequest.of(pageNumber, pageAmount);
         Page<OrderDetail> ordersDetailPage = orderDetailRepository.findAll(pageable);

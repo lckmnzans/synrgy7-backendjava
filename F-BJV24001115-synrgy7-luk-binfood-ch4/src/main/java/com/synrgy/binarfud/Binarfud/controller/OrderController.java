@@ -78,6 +78,11 @@ public class OrderController {
         orderList.forEach(order -> System.out.println(order.getId() +" | "+ order.getOrderTime() +" | "+ order.getUser().getUsername() +" | "+ order.getDestinationAddress()));
     }
 
+    public void showAllOrdersDetail() {
+        List<OrderDetail> orderDetailList = orderDetailService.getAllOrdersDetail();
+        orderDetailList.forEach(orderDetail -> log.info(orderDetail.getId().toString()));
+    }
+
     public void showAllOrdersDetailPageable(int pageNumber, int pageAmount) {
         List<OrderDetail> orderDetailList = orderDetailService.getAllOrdersDetailPageable(pageNumber, pageAmount);
         orderDetailList.forEach(orderDetail -> System.out.println(orderDetail.getProduct().getProductName() +" | "+ orderDetail.getQuantity() +" | "+ orderDetail.getTotalPrice()));
