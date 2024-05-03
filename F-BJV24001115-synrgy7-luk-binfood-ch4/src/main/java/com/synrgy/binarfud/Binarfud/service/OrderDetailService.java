@@ -6,4 +6,6 @@ import java.util.List;
 
 public interface OrderDetailService {
     void createBatchesOrder(List<OrderDetail> orderDetailList);
+
+    List<OrderDetail> getAllOrdersDetailPageable(int pageNumber, int pageAmount);
 }

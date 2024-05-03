@@ -8,6 +8,7 @@ import com.synrgy.binarfud.Binarfud.service.OrderDetailService;
 import com.synrgy.binarfud.Binarfud.service.OrderService;
 import com.synrgy.binarfud.Binarfud.service.ProductService;
 import com.synrgy.binarfud.Binarfud.service.UserService;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -17,6 +18,7 @@ import java.util.Date;
 import java.util.List;
 
 @Component
+@Slf4j
 public class OrderController {
     @Autowired
     private OrderService orderService;
@@ -76,6 +78,11 @@ public class OrderController {
         orderList.forEach(order -> System.out.println(order.getId() +" | "+ order.getOrderTime() +" | "+ order.getUser().getUsername() +" | "+ order.getDestinationAddress()));
     }
 
+    public void showAllOrdersDetailPageable(int pageNumber, int pageAmount) {
+        List<OrderDetail> orderDetailList = orderDetailService.getAllOrdersDetailPageable(pageNumber, pageAmount);
+        orderDetailList.forEach(orderDetail -> System.out.println(orderDetail.getProduct().getProductName() +" | "+ orderDetail.getQuantity() +" | "+ orderDetail.getTotalPrice()));
+    }
+
     public void showOrderDetail(String orderId) {
         Order order = orderService.getOrder(orderId);
         order.getOrderDetailList().forEach(orderDetail -> System.out.println(orderDetail.getProduct().getProductName() +" | "+ orderDetail.getQuantity() +" | "+ orderDetail.getTotalPrice()));
@@ -85,5 +92,6 @@ public class OrderController {
         Order order = orderService.getOrder(orderId);
         order.setCompleted(completedStatus);
         orderService.updateOrderStatus(order);
+        log.debug("Order status berhasil dirubah");
     }
 }

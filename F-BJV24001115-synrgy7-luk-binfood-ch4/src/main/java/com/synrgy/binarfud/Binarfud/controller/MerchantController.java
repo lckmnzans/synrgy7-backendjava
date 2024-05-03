@@ -64,6 +64,7 @@ public class MerchantController {
             merchant = merchantService.getMerchantById(merchantId);
             merchant.setOpen(isOpened);
             merchantService.updateMerchant(merchant);
+            log.debug("Merchant telah berhasil diupdate");
         } catch (RuntimeException e) {
             log.error(e.getLocalizedMessage());
         }

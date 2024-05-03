@@ -58,6 +58,7 @@ public class UserController {
         try {
             user = userService.getUserByUsername(username);
             userService.updateUserData(user, newUsername);
+            log.debug("User username telah berhasil diupdate");
         } catch (RuntimeException e) {
             log.error(e.getLocalizedMessage());
             System.out.println(username + " gagal diupdate");
