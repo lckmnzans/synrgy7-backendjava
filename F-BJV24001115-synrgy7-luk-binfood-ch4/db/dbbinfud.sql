@@ -195,6 +195,8 @@ COPY public.product (price, id, merchant_id, product_name) FROM stdin;
 
 COPY public.users (id, email_address, name, password, username) FROM stdin;
 d4adc60e-ac01-4703-b47a-e9265d4a8dc6	lckmnzans@gmail.com	Lukman Sanusi	123	lckmnzans
+9c939d58-daca-4d9b-90e8-4583cbd3f48b	synmmmo@mail.co	Sinonia Caitlyn	sin123	sinonia
+ab860ed8-c2cf-49fe-977f-df74fa4fdf01	taucho@youmail.com	Hu Tao	666	wangshen
 \.
 
 

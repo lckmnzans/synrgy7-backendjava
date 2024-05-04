@@ -15,4 +15,6 @@ public interface OrderService {
     List<Order> getAllOrdersByUser(Users user);
 
     Order updateOrderStatus(Order order);
+
+    void deleteOrder(Order order);
 }

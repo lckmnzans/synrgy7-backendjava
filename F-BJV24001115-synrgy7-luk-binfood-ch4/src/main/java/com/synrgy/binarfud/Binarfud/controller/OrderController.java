@@ -9,9 +9,11 @@ import com.synrgy.binarfud.Binarfud.service.OrderService;
 import com.synrgy.binarfud.Binarfud.service.ProductService;
 import com.synrgy.binarfud.Binarfud.service.UserService;
 import lombok.extern.slf4j.Slf4j;
+import org.aspectj.weaver.ast.Or;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
+import java.awt.*;
 import java.time.Instant;
 import java.util.ArrayList;
 import java.util.Date;
@@ -66,6 +68,7 @@ public class OrderController {
                 .quantity(qty)
                 .totalPrice(product.getPrice() * qty)
                 .build();
+        log.info("Order Detail telah dibuat dengan Produk :"+product.getProductName()+" dan Jumlah :"+qty);
         return orderDetail;
     }
 
@@ -83,11 +86,11 @@ public class OrderController {
         orderDetailList = new ArrayList<>();
     }
 
-    public void fillOrderDetail(OrderDetail orderDetail) {
-        orderDetailList.add(orderDetail);
+    public void fillOrderDetail(Product product, int qty) {
+        orderDetailList.add(createOrderDetail(product, qty));
     }
 
-    public List<OrderDetail> getOrderDetailList() {
+    public List<OrderDetail> getListOfOrderDetail() {
         return orderDetailList;
     }
 
@@ -122,5 +125,10 @@ public class OrderController {
         order.setCompleted(completedStatus);
         orderService.updateOrderStatus(order);
         log.debug("Order status berhasil dirubah");
+    }
+
+    public void deleteOrder(String orderId) {
+        Order order = orderService.getOrder(orderId);
+        orderService.deleteOrder(order);
     }
 }

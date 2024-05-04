@@ -14,32 +14,11 @@ import java.util.*;
 @Slf4j
 public class MainView {
     public static final int SEP_LENGTH = 36;
-    @Autowired
-    private UserController userController;
 
     private Scanner in;
 
     public void setScanner(Scanner scanner) {
         this.in = scanner;
-    }
-
-    public Users displayLoginMenu() {
-        displayBody("Mohon login terlebih dahulu");
-        while (true) {
-            System.out.print("username :");
-            String username = in.nextLine();
-            System.out.print("password :");
-            String password = in.nextLine();
-            Users user = userController.showUserDetailByUsername(username);
-            if (user != null) {
-                if (user.getPassword().equals(password)) {
-                    System.out.println("Login sukses");
-                    return user;
-                } else {
-                    System.out.println("Login gagal");
-                }
-            }
-        }
     }
 
     public String displayMainMenu(Users user) {
@@ -133,26 +112,7 @@ public class MainView {
         }
     }
 
-    public int displayOrderConfirmation(int qty, Product product) {
-        displayHeader("Konfirmasi menu pesanan anda");
-        String bodyContent = String.format("%-25s | %7.1f%n", qty+" "+product.getProductName(), product.getPrice() * qty);
-        displayBody(bodyContent);
-        String footerContent =
-                """
-                    00. Konfirmasi pesanan         \s
-                    01. Batalkan pesanan           \s""";
-        while (true) {
-            displayFooter(footerContent, "=>");
-            String userInput = in.nextLine();
-            if (userInput.equals("00")) {
-                return qty;
-            } else if (userInput.equals("01")) {
-                return 0;
-            }
-        }
-    }
-
-    public int displayCompletingOrderConfirmation() {
+    public int displayConfirmation() {
         String footerContent =
                 """
                     00. Konfirmasi pesanan         \s

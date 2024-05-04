@@ -22,8 +22,8 @@ public class ProductController {
     private MerchantService merchantService;
 
     public void test() {
-        String merchant1 = "Geprek Jago";
-        String merchant2 = "Bakmi 99 Pak Joko";
+        String merchant1 = "ba1aecca-2b6b-4813-9ac8-12c4eb95e217";
+        String merchant2 = "cab83cc6-ff69-4f07-9144-95ec1ca3a0d9";
         createProduct("Geprek Bakar", 10000.0, merchant1);
         createProduct("Geprek Mozarella", 12000.0, merchant1);
         createProduct("Nasi Goreng Ayam", 12000.0, merchant2);

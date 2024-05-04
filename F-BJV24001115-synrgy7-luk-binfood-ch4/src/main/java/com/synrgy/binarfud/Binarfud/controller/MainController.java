@@ -15,6 +15,7 @@ import java.util.Scanner;
 @Component
 @Slf4j
 public class MainController {
+    private Scanner inputConsole;
     private String userInput;
     private Users userNow;
 
@@ -31,16 +32,38 @@ public class MainController {
     public MainController(
             MainView mainView
     ) {
-        Scanner inputConsole = new Scanner(System.in);
+        this.inputConsole = new Scanner(System.in);
         this.mainView = mainView;
         mainView.setScanner(inputConsole);
     }
 
     public void init() {
-//        homeView.displayHeader("Selamat datang di Binar Food");
-//        userNow = homeView.displayLoginMenu(inputConsole);
-        userNow = userController.showUserDetailByUsername("lckmnzans");
+//        userController.test();
+//        merchantController.test();
+//        productController.test();
+        loginProcess();
         homeProcess();
+    }
+
+    public void loginProcess() {
+        mainView.displayHeader("Selamat datang di Binar Food");
+        mainView.displayBody("Mohon login terlebih dahulu \n Atau buat akun jika belum ada");
+        while (true) {
+            System.out.print("username :");
+            String username = inputConsole.nextLine();
+            System.out.print("password :");
+            String password = inputConsole.nextLine();
+            Users user = userController.showUserDetailByUsername(username);
+            if (user != null) {
+                if (user.getPassword().equals(password)) {
+                    System.out.println("Login sukses");
+                    userNow = user;
+                    break;
+                } else {
+                    System.out.println("Login gagal");
+                }
+            }
+        }
     }
 
     public void homeProcess() {
@@ -71,7 +94,7 @@ public class MainController {
             if (qty == 0) {
                 orderingProcess(productList);
             } else {
-                orderController.getOrderDetailList().add(orderController.createOrderDetail(product, qty));
+                orderController.fillOrderDetail(product, qty);
                 orderingProcess(productList);
             }
         }
@@ -79,12 +102,21 @@ public class MainController {
 
     public int orderingSubProcess(Product product) {
         int qty = mainView.displayOrderingSelection(product);
-        if (qty != 0) return mainView.displayOrderConfirmation(qty, product);
-        return qty;
+        if (qty != 0) {
+            mainView.displayHeader("Konfirmasi menu pesanan anda");
+            mainView.displayBody(String.format("%-25s | %7.1f%n", qty+" "+product.getProductName(), product.getPrice() * qty));
+            int confirmation = mainView.displayConfirmation();
+            if (confirmation == 1) {
+                return qty;
+            } else if (confirmation == 0) {
+                return 0;
+            }
+        }
+        return 0;
     }
 
     public void completingOrderProcess() {
-        List<OrderDetail> orderDetailList = orderController.getOrderDetailList();
+        List<OrderDetail> orderDetailList = orderController.getListOfOrderDetail();
         if (!orderDetailList.isEmpty()) {
             mainView.displayHeader("Binarfud");
             orderDetailList.forEach(orderDetail ->
@@ -92,7 +124,7 @@ public class MainController {
                             String.format("%-25s | %7.2f", orderDetail.getQuantity() + " " + orderDetail.getProduct().getProductName(), orderDetail.getTotalPrice())
                     )
             );
-            int confirmation = mainView.displayCompletingOrderConfirmation();
+            int confirmation = mainView.displayConfirmation();
             if (confirmation == 1) {
                 orderController.createOrder(userNow.getUsername(), "", orderDetailList);
                 mainView.displayHeader("Pesanan anda telah dibuat");
