@@ -1,9 +1,10 @@
 package com.synrgy.binarfud.Binarfud.controller;
 
 import com.synrgy.binarfud.Binarfud.model.Merchant;
+import com.synrgy.binarfud.Binarfud.model.OrderDetail;
 import com.synrgy.binarfud.Binarfud.model.Product;
 import com.synrgy.binarfud.Binarfud.model.Users;
-import com.synrgy.binarfud.Binarfud.view.HomeView;
+import com.synrgy.binarfud.Binarfud.view.MainView;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
@@ -25,41 +26,86 @@ public class MainController {
     private ProductController productController;
     @Autowired
     private OrderController orderController;
-    private final HomeView homeView;
+    private final MainView mainView;
 
     public MainController(
-            HomeView homeView
+            MainView mainView
     ) {
         Scanner inputConsole = new Scanner(System.in);
-        this.homeView = homeView;
-        homeView.setScanner(inputConsole);
+        this.mainView = mainView;
+        mainView.setScanner(inputConsole);
     }
 
     public void init() {
 //        homeView.displayHeader("Selamat datang di Binar Food");
 //        userNow = homeView.displayLoginMenu(inputConsole);
         userNow = userController.showUserDetailByUsername("lckmnzans");
-        homeView();
+        homeProcess();
     }
 
-    public void homeView() {
-        userInput = homeView.displayMainMenu(userNow);
+    public void homeProcess() {
+        userInput = mainView.displayMainMenu(userNow);
         switch (userInput) {
             case "1" -> {
                 List<Product> productList = productController.showAllProducts();
-                userInput = homeView.displayMenuSelection(productList);
-                if (userInput.equals("00")) homeView();
-                else {
-                    Product product = productController.showProduct(userInput);
-                    homeView.displayOrderingSelection(product);
-                }
+                orderingProcess(productList);
             }
             case "2" -> {
                 List<Merchant> merchantList = merchantController.showAllMerchants(true);
-                userInput = homeView.displayMerchantSelection(merchantList);
-                if (userInput.equals("00")) homeView();
+                userInput = mainView.displayMerchantSelection(merchantList);
+                if (userInput.equals("00")) homeProcess();
             }
-            default -> homeView();
+            case "3" -> {
+                completingOrderProcess();
+            }
+            default -> homeProcess();
+        }
+    }
+
+    public void orderingProcess(List<Product> productList) {
+        userInput = mainView.displayMenuSelection(productList);
+        if (userInput.equals("00")) homeProcess();
+        else {
+            Product product = productController.showProduct(userInput);
+            int qty = orderingSubProcess(product);
+            if (qty == 0) {
+                orderingProcess(productList);
+            } else {
+                orderController.getOrderDetailList().add(orderController.createOrderDetail(product, qty));
+                orderingProcess(productList);
+            }
+        }
+    }
+
+    public int orderingSubProcess(Product product) {
+        int qty = mainView.displayOrderingSelection(product);
+        if (qty != 0) return mainView.displayOrderConfirmation(qty, product);
+        return qty;
+    }
+
+    public void completingOrderProcess() {
+        List<OrderDetail> orderDetailList = orderController.getOrderDetailList();
+        if (!orderDetailList.isEmpty()) {
+            mainView.displayHeader("Binarfud");
+            orderDetailList.forEach(orderDetail ->
+                    mainView.displayBody(
+                            String.format("%-25s | %7.2f", orderDetail.getQuantity() + " " + orderDetail.getProduct().getProductName(), orderDetail.getTotalPrice())
+                    )
+            );
+            int confirmation = mainView.displayCompletingOrderConfirmation();
+            if (confirmation == 1) {
+                orderController.createOrder(userNow.getUsername(), "", orderDetailList);
+                mainView.displayHeader("Pesanan anda telah dibuat");
+                orderController.clearOrderDetail();
+                homeProcess();
+            } else if (confirmation == 0) {
+                mainView.displayHeader("Pesanan anda dibatalkan");
+                orderController.clearOrderDetail();
+                homeProcess();
+            }
+        } else {
+            mainView.displayHeader("Anda belum memesan apapun");
+            homeProcess();
         }
     }
 }

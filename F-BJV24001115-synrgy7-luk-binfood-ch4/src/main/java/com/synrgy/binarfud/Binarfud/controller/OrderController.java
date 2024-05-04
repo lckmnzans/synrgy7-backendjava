@@ -32,6 +32,8 @@ public class OrderController {
     @Autowired
     private ProductService productService;
 
+    private List<OrderDetail> orderDetailList = new ArrayList<>();
+
     public void test() {
         String username = "lckmnzans";
         List<OrderDetail> orders = new ArrayList<>();
@@ -57,7 +59,7 @@ public class OrderController {
         orderDetailService.createBatchesOrder(orderDetailList);
     }
 
-    private OrderDetail createOrderDetail(String productId, int qty) {
+    public OrderDetail createOrderDetail(String productId, int qty) {
         Product product = productService.getProductById(productId);
         OrderDetail orderDetail = OrderDetail.builder()
                 .product(product)
@@ -65,6 +67,28 @@ public class OrderController {
                 .totalPrice(product.getPrice() * qty)
                 .build();
         return orderDetail;
+    }
+
+    public OrderDetail createOrderDetail(Product product, int qty) {
+        OrderDetail orderDetail = OrderDetail.builder()
+                .product(product)
+                .quantity(qty)
+                .totalPrice(product.getPrice() * qty)
+                .build();
+        log.info("Order Detail telah dibuat dengan Produk :"+product.getProductName()+" dan Jumlah :"+qty);
+        return orderDetail;
+    }
+
+    public void clearOrderDetail() {
+        orderDetailList = new ArrayList<>();
+    }
+
+    public void fillOrderDetail(OrderDetail orderDetail) {
+        orderDetailList.add(orderDetail);
+    }
+
+    public List<OrderDetail> getOrderDetailList() {
+        return orderDetailList;
     }
 
     public void showAllOrders() {

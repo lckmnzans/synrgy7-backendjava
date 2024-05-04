@@ -1,7 +1,5 @@
 package com.synrgy.binarfud.Binarfud.view;
 
-import com.synrgy.binarfud.Binarfud.controller.MainController;
-import com.synrgy.binarfud.Binarfud.controller.OrderController;
 import com.synrgy.binarfud.Binarfud.controller.UserController;
 import com.synrgy.binarfud.Binarfud.model.Merchant;
 import com.synrgy.binarfud.Binarfud.model.Product;
@@ -11,17 +9,13 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import java.util.*;
-import java.util.stream.Collectors;
 
 @Component
 @Slf4j
-public class HomeView {
+public class MainView {
     public static final int SEP_LENGTH = 36;
     @Autowired
     private UserController userController;
-
-    @Autowired
-    private OrderController orderController;
 
     private Scanner in;
 
@@ -53,7 +47,8 @@ public class HomeView {
         String contentBody =
                 """
                         1. Lihat seluruh menu
-                        2. Lihat seluruh penjual""";
+                        2. Lihat seluruh penjual
+                        3. Lihat pesanan""";
         displayBody(contentBody);
         String inputMenu;
         while (true) {
@@ -63,6 +58,8 @@ public class HomeView {
                 return "1";
             } else if (inputMenu.equals("2")) {
                 return "2";
+            } else if (inputMenu.equals("3")) {
+                return "3";
             } else if (inputMenu.equals("00")) {
                 displayHeader("Pemesanan dibatalkan");
                 System.exit(0);
@@ -114,10 +111,61 @@ public class HomeView {
         System.out.println("Status : "+ (merchant.isOpen() ? "buka" : "tutup"));
     }
 
-    public void displayOrderingSelection(Product product) {
+    public int displayOrderingSelection(Product product) {
         displayHeader("Silahkan masukkan jumlah pesanan");
         displayBody("+ "+ product.getProductName());
-        displayFooter("", "=>");
+        int inputQty = 0;
+        while (true) {
+            displayFooter("Masukkan 0 untuk membatalkan", "=>");
+            if (in.hasNextInt()) {
+                inputQty = in.nextInt();
+                in.nextLine();
+                if (inputQty == 0) {
+                    return 0;
+                } else {
+                    return inputQty;
+                }
+            } else {
+                displayHeader("Maaf, masukkan jumlah pesanan");
+                displayBody("+ "+product.getProductName());
+                in.nextLine();
+            }
+        }
+    }
+
+    public int displayOrderConfirmation(int qty, Product product) {
+        displayHeader("Konfirmasi menu pesanan anda");
+        String bodyContent = String.format("%-25s | %7.1f%n", qty+" "+product.getProductName(), product.getPrice() * qty);
+        displayBody(bodyContent);
+        String footerContent =
+                """
+                    00. Konfirmasi pesanan         \s
+                    01. Batalkan pesanan           \s""";
+        while (true) {
+            displayFooter(footerContent, "=>");
+            String userInput = in.nextLine();
+            if (userInput.equals("00")) {
+                return qty;
+            } else if (userInput.equals("01")) {
+                return 0;
+            }
+        }
+    }
+
+    public int displayCompletingOrderConfirmation() {
+        String footerContent =
+                """
+                    00. Konfirmasi pesanan         \s
+                    01. Batalkan pesanan           \s""";
+        while (true) {
+            displayFooter(footerContent, "=>");
+            String userInput = in.nextLine();
+            if (userInput.equals("00")) {
+                return 1;
+            } else if (userInput.equals("01")) {
+                return 0;
+            }
+        }
     }
 
     public void displayHeader(String content) {
