@@ -55,8 +55,8 @@ public class MerchantController {
         return merchantList;
     }
 
-    public void showAllMerchants() {
-        showAllMerchants(null);
+    public List<Merchant> showAllMerchants() {
+        return showAllMerchants(null);
     }
 
     public void editMerchantsOpenStatus(String merchantId, boolean isOpened) {

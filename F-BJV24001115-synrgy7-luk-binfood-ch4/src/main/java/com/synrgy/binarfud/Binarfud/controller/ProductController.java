@@ -47,6 +47,17 @@ public class ProductController {
         return products;
     }
 
+    public Product showProduct(String productId) {
+        Product product;
+        try {
+            product = productService.getProductById(productId);
+            return product;
+        } catch (RuntimeException e) {
+            log.error(e.getLocalizedMessage());
+        }
+        return null;
+    }
+
     public void showProductsByMerchant(String merchantId) {
         StopWatch sw = new StopWatch();
         sw.start();

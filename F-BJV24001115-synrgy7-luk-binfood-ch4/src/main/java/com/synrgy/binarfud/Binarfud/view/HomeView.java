@@ -1,23 +1,35 @@
 package com.synrgy.binarfud.Binarfud.view;
 
 import com.synrgy.binarfud.Binarfud.controller.MainController;
+import com.synrgy.binarfud.Binarfud.controller.OrderController;
 import com.synrgy.binarfud.Binarfud.controller.UserController;
 import com.synrgy.binarfud.Binarfud.model.Merchant;
 import com.synrgy.binarfud.Binarfud.model.Product;
 import com.synrgy.binarfud.Binarfud.model.Users;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
-import java.util.List;
-import java.util.Scanner;
+import java.util.*;
+import java.util.stream.Collectors;
 
 @Component
+@Slf4j
 public class HomeView {
     public static final int SEP_LENGTH = 36;
     @Autowired
     private UserController userController;
 
-    public Users displayLoginMenu(Scanner in) {
+    @Autowired
+    private OrderController orderController;
+
+    private Scanner in;
+
+    public void setScanner(Scanner scanner) {
+        this.in = scanner;
+    }
+
+    public Users displayLoginMenu() {
         displayBody("Mohon login terlebih dahulu");
         while (true) {
             System.out.print("username :");
@@ -36,18 +48,16 @@ public class HomeView {
         }
     }
 
-    public String displayMainMenu(Scanner in, Users user) {
+    public String displayMainMenu(Users user) {
         displayHeader("Selamat Datang "+user.getName());
         String contentBody =
                 """
                         1. Lihat seluruh menu
-                        2. Lihat seluruh penjual
-                        
-                        00. Batalkan semuanya""";
+                        2. Lihat seluruh penjual""";
         displayBody(contentBody);
         String inputMenu;
         while (true) {
-            displayFooter("", "=>");
+            displayFooter("00. Batalkan semuanya", "=>");
             inputMenu = in.nextLine();
             if (inputMenu.equals("1")) {
                 return "1";
@@ -60,35 +70,54 @@ public class HomeView {
         }
     }
 
-    public String displayMenuSelection(List<Product> productList, Scanner in) {
+    public String displayMenuSelection(List<Product> productList) {
         displayHeader("Menampilkan seluruh menu");
-        productList.forEach(product -> displayMenuItem(product));
+        Map<String, Product> productHashMap = displayMenuItem(productList);
         displayBody("Masukkan nama menu untuk memesan");
         String inputMenu;
         while (true) {
-            displayFooter("00. Kembali ke menu utama", "=> ");
+            displayFooter("00. Kembali ke menu utama", "=>");
             inputMenu = in.nextLine();
             if (inputMenu.equals("00")) return "00";
+            Optional<Product> product = getSelectedItem(productHashMap, inputMenu);
+            if (product.isPresent()) return product.get().getId().toString();
         }
     }
 
-    public void displayMenuItem(Product product) {
-        System.out.printf("%-26s | %6d%n", "- "+product.getProductName(), product.getPrice().intValue());
+    private Map<String, Product> displayMenuItem(List<Product> productList) {
+        LinkedHashMap<String, Product> productLinkedHashMap = new LinkedHashMap<>();
+        for (int i = 0; i<productList.size(); i++) {
+            productLinkedHashMap.put(String.valueOf(i+1), productList.get(i));
+            System.out.printf("%-26s | %6d%n", (i+1)+" "+productList.get(i).getProductName(), productList.get(i).getPrice().intValue());
+        }
+        return productLinkedHashMap;
     }
 
-    public String displayMerchantSelection(List<Merchant> merchantList, Scanner in) {
+    public String displayMerchantSelection(List<Merchant> merchantList) {
         displayHeader("Menampilkan seluruh restoran");
         if (!merchantList.isEmpty()) {
-            merchantList.forEach(merchant -> System.out.println(merchant.getMerchantName() + "<->" + merchant.getMerchantLocation()));
+            merchantList.forEach(this::displayMerchantItem);
         } else {
             displayBody("Belum ada restoran yang sedang buka");
         }
         String inputMenu;
         while (true) {
-            displayFooter("00. Kembali ke menu utama", "=> ");
+            displayFooter("00. Kembali ke menu utama", "=>");
             inputMenu = in.nextLine();
             if (inputMenu.equals("00")) return "00";
         }
+    }
+
+    private void displayMerchantItem(Merchant merchant) {
+        System.out.println(merchant.getMerchantName());
+        System.out.println("Lokasi : "+ merchant.getMerchantLocation());
+        System.out.println("Status : "+ (merchant.isOpen() ? "buka" : "tutup"));
+    }
+
+    public void displayOrderingSelection(Product product) {
+        displayHeader("Silahkan masukkan jumlah pesanan");
+        displayBody("+ "+ product.getProductName());
+        displayFooter("", "=>");
     }
 
     public void displayHeader(String content) {
@@ -113,5 +142,10 @@ public class HomeView {
 
     public void displayFooter(String content, String symbol) {
         displayFooter(content, symbol, false);
+    }
+
+    private Optional<Product> getSelectedItem(Map<String, Product> productHashMap, String input) {
+        if (productHashMap.containsKey(input)) return Optional.of(productHashMap.get(input));
+        return Optional.empty();
     }
 }
