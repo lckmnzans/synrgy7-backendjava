@@ -39,9 +39,6 @@ public class OrderController {
     public void test() {
         String username = "lckmnzans";
         List<OrderDetail> orders = new ArrayList<>();
-        orders.add(createOrderDetail("ce77b5c7-f060-453c-989a-e1fdb9739871", 2));
-        orders.add(createOrderDetail("5314a4ba-e521-4bf6-93ce-59177c2aae1c", 1));
-        createOrder(username, "Jl Tj Sari VI No.29, Sumurboto, Banyumanik, Kota Semarang", orders);
     }
 
     public void createOrder(String username, String destinationAddress, List<OrderDetail> orderDetailList) {

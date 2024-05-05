@@ -1,11 +1,9 @@
 package com.synrgy.binarfud.Binarfud.view;
 
-import com.synrgy.binarfud.Binarfud.controller.UserController;
 import com.synrgy.binarfud.Binarfud.model.Merchant;
 import com.synrgy.binarfud.Binarfud.model.Product;
 import com.synrgy.binarfud.Binarfud.model.Users;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import java.util.*;
@@ -48,15 +46,20 @@ public class MainView {
 
     public String displayMenuSelection(List<Product> productList) {
         displayHeader("Menampilkan seluruh menu");
-        Map<String, Product> productHashMap = displayMenuItem(productList);
-        displayBody("Masukkan nama menu untuk memesan");
-        String inputMenu;
-        while (true) {
-            displayFooter("00. Kembali ke menu utama", "=>");
-            inputMenu = in.nextLine();
-            if (inputMenu.equals("00")) return "00";
-            Optional<Product> product = getSelectedItem(productHashMap, inputMenu);
-            if (product.isPresent()) return product.get().getId().toString();
+        if (productList.isEmpty()) {
+            displayBody("Belum ada restoran yang sedang buka");
+            return "00";
+        } else {
+            Map<String, Product> productHashMap = displayMenuItem(productList);
+            displayBody("Masukkan nama menu untuk memesan");
+            String inputMenu;
+            while (true) {
+                displayFooter("00. Kembali ke menu utama", "=>");
+                inputMenu = in.nextLine();
+                if (inputMenu.equals("00")) return "00";
+                Optional<Product> product = getSelected(productHashMap, inputMenu);
+                if (product.isPresent()) return product.get().getId().toString();
+            }
         }
     }
 
@@ -71,17 +74,33 @@ public class MainView {
 
     public String displayMerchantSelection(List<Merchant> merchantList) {
         displayHeader("Menampilkan seluruh restoran");
-        if (!merchantList.isEmpty()) {
-            merchantList.forEach(this::displayMerchantItem);
-        } else {
+        if (merchantList.isEmpty()) {
             displayBody("Belum ada restoran yang sedang buka");
+            return "00";
+        } else {
+            Map<String, Merchant> merchantHashMap = displayMerchantItem(merchantList);
+            displayBody("Pilih restoran untuk memesan");
+            String inputMenu;
+            while (true) {
+                displayFooter("00. Kembali ke menu utama", "=>");
+                inputMenu = in.nextLine();
+                if (inputMenu.equals("00")) return "00";
+                Optional<Merchant> merchant = getSelected(merchantHashMap, inputMenu);
+                if (merchant.isPresent()) return merchant.get().getId().toString();
+            }
         }
-        String inputMenu;
-        while (true) {
-            displayFooter("00. Kembali ke menu utama", "=>");
-            inputMenu = in.nextLine();
-            if (inputMenu.equals("00")) return "00";
+    }
+
+    private Map<String, Merchant> displayMerchantItem(List<Merchant> merchantList) {
+        LinkedHashMap<String, Merchant> merchantLinkedHashMap = new LinkedHashMap<>();
+        for (int i = 0; i<merchantList.size(); i++) {
+            merchantLinkedHashMap.put(String.valueOf(i+1), merchantList.get(i));
+            System.out.println((i+1)+") "+merchantList.get(i).getMerchantName());
+            System.out.println("Lokasi : "+ merchantList.get(i).getMerchantLocation());
+            System.out.println("Status : "+ (merchantList.get(i).isOpen() ? "buka" : "tutup"));
+            System.out.println();
         }
+        return merchantLinkedHashMap;
     }
 
     private void displayMerchantItem(Merchant merchant) {
@@ -152,8 +171,8 @@ public class MainView {
         displayFooter(content, symbol, false);
     }
 
-    private Optional<Product> getSelectedItem(Map<String, Product> productHashMap, String input) {
-        if (productHashMap.containsKey(input)) return Optional.of(productHashMap.get(input));
+    private <K, V> Optional<V> getSelected(Map<K, V> map, K key) {
+        if (map.containsKey(key)) return Optional.of(map.get(key));
         return Optional.empty();
     }
 }

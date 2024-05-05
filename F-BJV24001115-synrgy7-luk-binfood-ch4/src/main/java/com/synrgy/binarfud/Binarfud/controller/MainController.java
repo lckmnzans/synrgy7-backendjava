@@ -47,7 +47,7 @@ public class MainController {
 
     public void loginProcess() {
         mainView.displayHeader("Selamat datang di Binar Food");
-        mainView.displayBody("Mohon login terlebih dahulu \n Atau buat akun jika belum ada");
+        mainView.displayBody("Mohon login terlebih dahulu");
         while (true) {
             System.out.print("username :");
             String username = inputConsole.nextLine();
@@ -70,13 +70,17 @@ public class MainController {
         userInput = mainView.displayMainMenu(userNow);
         switch (userInput) {
             case "1" -> {
-                List<Product> productList = productController.showAllProducts();
+                List<Product> productList = productController.showAllProducts(true);
                 orderingProcess(productList);
             }
             case "2" -> {
                 List<Merchant> merchantList = merchantController.showAllMerchants(true);
                 userInput = mainView.displayMerchantSelection(merchantList);
                 if (userInput.equals("00")) homeProcess();
+                else {
+                    List<Product> productList = productController.showProductsByMerchant(userInput);
+                    orderingProcess(productList);
+                }
             }
             case "3" -> {
                 completingOrderProcess();
@@ -126,7 +130,10 @@ public class MainController {
             );
             int confirmation = mainView.displayConfirmation();
             if (confirmation == 1) {
-                orderController.createOrder(userNow.getUsername(), "", orderDetailList);
+                mainView.displayHeader("Masukkan destinasi pengiriman");
+                mainView.displayFooter("", "=>");
+                userInput = inputConsole.nextLine();
+                orderController.createOrder(userNow.getUsername(), userInput, orderDetailList);
                 mainView.displayHeader("Pesanan anda telah dibuat");
                 orderController.clearOrderDetail();
                 homeProcess();

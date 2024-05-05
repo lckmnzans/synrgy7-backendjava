@@ -10,6 +10,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.springframework.util.StopWatch;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Component
@@ -42,7 +43,13 @@ public class ProductController {
     }
 
     public List<Product> showAllProducts() {
-        List<Product> products = productService.getAllProducts();
+        return showAllProducts(false);
+    }
+
+    public List<Product> showAllProducts(boolean merchantIsOpen) {
+        List<Merchant> merchants = merchantService.getAllMerchantFilter(merchantIsOpen);
+        List<Product> products = new ArrayList<>();
+        merchants.forEach(merchant -> products.addAll(merchant.getProductList()));
         products.forEach(product -> log.info(product.getProductName() + " | " + product.getPrice() + " | " + product.getMerchant().getMerchantName()));
         return products;
     }
@@ -58,15 +65,16 @@ public class ProductController {
         return null;
     }
 
-    public void showProductsByMerchant(String merchantId) {
+    public List<Product> showProductsByMerchant(String merchantId) {
         StopWatch sw = new StopWatch();
         sw.start();
         Merchant merchant = merchantService.getMerchantById(merchantId);
         List<Product> products = merchant.getProductList();
         sw.stop();
         if (sw.getTotalTimeSeconds() > 2) log.warn("Proses berjalan > 2 detik");
-        System.out.println("Produk dari merchant " + merchant.getMerchantName());
-        products.forEach(product -> System.out.println(product.getProductName() + " | " + product.getPrice()));
+//        System.out.println("Produk dari merchant " + merchant.getMerchantName());
+//        products.forEach(product -> System.out.println(product.getProductName() + " | " + product.getPrice()));
+        return products;
     }
 
     public void editProduct(String productId, @Nullable String newProductName, @Nullable Double newPrice) {
