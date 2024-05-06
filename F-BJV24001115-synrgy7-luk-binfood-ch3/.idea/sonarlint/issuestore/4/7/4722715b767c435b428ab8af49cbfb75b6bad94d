@@ -1,0 +1,19 @@
+
+s
+java:S1104"VMake menuOption a static final constant or non-public and provide accessors if needed.(õ»¼È8Šçèçî1
+v
+java:S1104"YMake subMenuOption a static final constant or non-public and provide accessors if needed.(íÙ¶¶8‹çèçî1
+M
+java:S1444"0Make this "public static menuOption" field final(õ»¼È8Œçèçî1
+P
+java:S1444"3Make this "public static subMenuOption" field final(íÙ¶¶8Œçèçî1
+Y
+java:S2386"Make this member "protected".(¾ØÖÖJ$933434df-abab-423a-a3c8-201c5c16f8a5
+^
+java:S2386"Make this member "protected".(ê»ÉÏýÿÿÿÿJ$2da3ea97-f312-49ec-85ae-b0dfb1b639ad
+:
+java:S2386"Make this member "protected".(õ»¼È8“çèçî1
+:
+java:S2386"Make this member "protected".(íÙ¶¶8“çèçî1
+u
+java:S1118":Add a private constructor to hide the implicit public one.(ÈÏÝPJ$74b13be5-fa1b-49b9-94f9-9393d7cc6eed
