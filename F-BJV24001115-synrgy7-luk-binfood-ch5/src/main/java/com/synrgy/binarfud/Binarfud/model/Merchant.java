@@ -1,6 +1,7 @@
 package com.synrgy.binarfud.Binarfud.model;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.synrgy.binarfud.Binarfud.payload.MerchantDto;
 import jakarta.persistence.*;
 import lombok.*;
 
@@ -25,7 +26,6 @@ public class Merchant {
 
     private boolean open = Boolean.FALSE;
 
-    @JsonIgnore
-    @OneToMany(mappedBy = "merchant", fetch = FetchType.EAGER)
+    @OneToMany(mappedBy = "merchant", fetch = FetchType.EAGER, cascade = CascadeType.ALL)
     private List<Product> productList;
 }

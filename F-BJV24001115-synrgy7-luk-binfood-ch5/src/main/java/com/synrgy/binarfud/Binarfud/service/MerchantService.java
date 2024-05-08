@@ -13,6 +13,8 @@ public interface MerchantService {
 
     Merchant updateMerchant(Merchant merchant);
 
+    Merchant updateMerchant(String id, Merchant merchant);
+
     List<Merchant> getAllMerchant();
 
     List<Merchant> getAllMerchantFilter(boolean isOpen);

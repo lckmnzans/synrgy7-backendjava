@@ -46,7 +46,21 @@ public class MerchantServiceImpl implements MerchantService {
     @Override
     public Merchant updateMerchant(Merchant merchant) {
         merchant = merchantRepository.save(merchant);
+        log.debug("update success");
         return merchant;
+    }
+
+    @Override
+    public Merchant updateMerchant(String merchantId, Merchant merchant) {
+        Optional<Merchant> oldMerchantData = merchantRepository.findById(UUID.fromString(merchantId));
+        if (oldMerchantData.isEmpty()) throw new RuntimeException("data does not exist, process cancelled");
+
+        Merchant merchantData = oldMerchantData.get();
+        if (merchant.getMerchantName() != null) merchantData.setMerchantName(merchant.getMerchantName());
+        if (merchant.getMerchantLocation() != null) merchantData.setMerchantLocation(merchant.getMerchantLocation());
+        if (merchant.isOpen() != oldMerchantData.get().isOpen()) merchantData.setOpen(merchant.isOpen());
+        merchantRepository.save(merchantData);
+        return merchantData;
     }
 
     @Override

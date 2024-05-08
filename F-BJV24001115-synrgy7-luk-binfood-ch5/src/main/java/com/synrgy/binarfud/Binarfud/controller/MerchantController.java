@@ -20,12 +20,12 @@ public class MerchantController {
         createMerchant("Bakmi 99 Pak Joko", "Jl Sumur Boto Bar. III, Sumurboto, Banyumanik, Kota Semarang");
     }
 
-    public void createMerchant(String merchantName, String merchantLocation) {
+    public Merchant createMerchant(String merchantName, String merchantLocation) {
         Merchant merchant = Merchant.builder()
                 .merchantName(merchantName)
                 .merchantLocation(merchantLocation)
                 .build();
-        merchantService.insertMerchant(merchant);
+        return merchantService.insertMerchant(merchant);
     }
 
     public void showMerchantDetail(String merchantId) {
@@ -59,16 +59,16 @@ public class MerchantController {
         return showAllMerchants(null);
     }
 
-    public void editMerchantsOpenStatus(String merchantId, boolean isOpened) {
+    public Merchant editMerchantsOpenStatus(String id, boolean isOpened) {
         Merchant merchant;
         try {
-            merchant = merchantService.getMerchantById(merchantId);
+            merchant = merchantService.getMerchantById(id);
             merchant.setOpen(isOpened);
-            merchantService.updateMerchant(merchant);
-            log.debug("Merchant telah berhasil diupdate");
+            return merchantService.updateMerchant(id, merchant);
         } catch (RuntimeException e) {
             log.error(e.getLocalizedMessage());
         }
+        return null;
     }
 
     public void deleteMerchant(String merchantId) {
