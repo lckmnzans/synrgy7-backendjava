@@ -42,12 +42,14 @@ public class ProductController {
         productService.insertProduct(product);
     }
 
-    public List<Product> showAllProducts() {
-        return showAllProducts(false);
-    }
+    public List<Product> showAllProducts(@Nullable Boolean merchantIsOpen) {
+        List<Merchant> merchants;
+        if (merchantIsOpen != null) {
+            merchants = merchantService.getAllMerchantFilter(merchantIsOpen);
+        } else {
+            merchants = merchantService.getAllMerchant();
+        }
 
-    public List<Product> showAllProducts(boolean merchantIsOpen) {
-        List<Merchant> merchants = merchantService.getAllMerchantFilter(merchantIsOpen);
         List<Product> products = new ArrayList<>();
         merchants.forEach(merchant -> products.addAll(merchant.getProductList()));
         products.forEach(product -> log.info(product.getProductName() + " | " + product.getPrice() + " | " + product.getMerchant().getMerchantName()));
