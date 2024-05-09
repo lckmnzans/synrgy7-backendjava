@@ -28,13 +28,15 @@ public class MerchantController {
         return merchantService.insertMerchant(merchant);
     }
 
-    public void showMerchantDetail(String merchantId) {
+    public Merchant showMerchantDetail(String merchantId) {
         Merchant merchant;
         try {
             merchant = merchantService.getMerchantById(merchantId);
             merchant.getProductList().forEach(product -> System.out.println(product.getProductName()));
+            return merchant;
         } catch (RuntimeException e) {
             log.error(e.getLocalizedMessage());
+            throw e;
         }
     }
 
@@ -80,7 +82,7 @@ public class MerchantController {
         } catch (RuntimeException e) {
             log.error(e.getLocalizedMessage());
             System.out.println("Operasi delete Merchant gagal");
+            throw e;
         }
-
     }
 }

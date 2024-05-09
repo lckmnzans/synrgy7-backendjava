@@ -152,9 +152,9 @@ ALTER TABLE public.users OWNER TO postgres;
 --
 
 COPY public.merchant (open, id, merchant_location, merchant_name) FROM stdin;
-f	592bab1b-af98-434f-9389-11900720cd7c	Jl Tj Sari VI No.29, Sumurboto, Banyumanik, Kota Semarang	Geprek Jago
 t	895b71ec-961c-4224-9492-6283709ee4b8	Jl Sumur Boto Bar. III, Sumurboto, Banyumanik, Kota Semarang	Bakmi 99 Pak Joko
 f	9b98a8e7-a27d-43d6-aaaf-13ea2e93428e	Jl. Banjarsari No.40, Tembalang, Kec. Tembalang, Kota Semarang, Jawa Tengah 50275	Burjo Lima
+f	592bab1b-af98-434f-9389-11900720cd7c	Jl Tj Sari VI No.29, Sumurboto, Banyumanik, Kota Semarang	Geprek Jago
 \.
 
 
