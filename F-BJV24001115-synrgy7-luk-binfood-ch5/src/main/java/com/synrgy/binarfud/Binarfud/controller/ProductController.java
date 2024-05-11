@@ -10,10 +10,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.springframework.util.StopWatch;
 
-import java.util.ArrayList;
-import java.util.LinkedHashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
+import java.util.function.Predicate;
 
 @Component
 @Slf4j
@@ -105,11 +103,16 @@ public class ProductController {
 
     public void deleteProduct(String productId) {
         Product product;
+        Merchant merchant;
         try {
             product = productService.getProductById(productId);
+            merchant = product.getMerchant();
+            merchant.getProductList().remove(product);
+            merchantService.updateMerchant(merchant);
             productService.deleteProduct(product);
         } catch (RuntimeException e) {
             log.error(e.getLocalizedMessage());
+            throw e;
         }
     }
 

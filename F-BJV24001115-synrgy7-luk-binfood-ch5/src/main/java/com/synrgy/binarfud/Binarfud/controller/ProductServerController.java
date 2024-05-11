@@ -117,4 +117,14 @@ public class ProductServerController {
         }
         return new ResponseEntity<>(new Response.Error("data belum memenuhi untuk diproses"), HttpStatus.OK);
     }
+
+    @DeleteMapping("product/{id}")
+    public ResponseEntity<Response> delete(@PathVariable("id") String id) {
+        try {
+            productController.deleteProduct(id);
+            return ResponseEntity.ok(new Response.SuccessNull("product deleted"));
+        } catch (RuntimeException e) {
+            return new ResponseEntity<>(new Response.Error(e.getLocalizedMessage()), HttpStatus.OK);
+        }
+    }
 }
