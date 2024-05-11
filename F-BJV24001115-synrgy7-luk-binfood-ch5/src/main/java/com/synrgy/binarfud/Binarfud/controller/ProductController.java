@@ -11,7 +11,9 @@ import org.springframework.stereotype.Component;
 import org.springframework.util.StopWatch;
 
 import java.util.ArrayList;
+import java.util.LinkedHashMap;
 import java.util.List;
+import java.util.Map;
 
 @Component
 @Slf4j
@@ -32,14 +34,21 @@ public class ProductController {
         createProduct("Bakmi Kuah", 14000.0, merchant2);
     }
 
-    public void createProduct(String productName, Double price, String merchantId) {
-        Merchant merchant = merchantService.getMerchantById(merchantId);
-        Product product = Product.builder()
-                .productName(productName)
-                .price(price)
-                .merchant(merchant)
-                .build();
-        productService.insertProduct(product);
+    public Product createProduct(String productName, Double price, String merchantId) {
+        Merchant merchant;
+        Product product;
+        try {
+            merchant = merchantService.getMerchantById(merchantId);
+            product = Product.builder()
+                    .productName(productName)
+                    .price(price)
+                    .merchant(merchant)
+                    .build();
+            return productService.insertProduct(product);
+        } catch (RuntimeException e) {
+            log.error(e.getLocalizedMessage());
+            throw e;
+        }
     }
 
     public List<Product> showAllProducts(@Nullable Boolean merchantIsOpen) {
@@ -102,5 +111,10 @@ public class ProductController {
         } catch (RuntimeException e) {
             log.error(e.getLocalizedMessage());
         }
+    }
+
+    public List<Map<String, Object>> fetchProduct(boolean open) {
+        List<Map<String, Object>> products = productService.fetchProducts(open);
+        return products;
     }
 }

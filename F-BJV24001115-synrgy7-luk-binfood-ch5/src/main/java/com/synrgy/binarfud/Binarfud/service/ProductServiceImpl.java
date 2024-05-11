@@ -7,10 +7,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.Collections;
-import java.util.List;
-import java.util.Optional;
-import java.util.UUID;
+import java.util.*;
 
 @Service
 @Slf4j
@@ -56,5 +53,10 @@ public class ProductServiceImpl implements ProductService {
             return Collections.emptyList();
         }
         return products;
+    }
+
+    @Override
+    public List<Map<String, Object>> fetchProducts(boolean open) {
+        return productRepository.fetchProductByMerchantStatus(open);
     }
 }

@@ -3,7 +3,9 @@ package com.synrgy.binarfud.Binarfud.service;
 import com.synrgy.binarfud.Binarfud.model.Product;
 import jakarta.annotation.Nullable;
 
+import java.util.LinkedHashMap;
 import java.util.List;
+import java.util.Map;
 
 public interface ProductService {
     Product insertProduct(Product product);
@@ -15,4 +17,6 @@ public interface ProductService {
     void deleteProduct(Product product);
 
     List<Product> getAllProducts();
+
+    List<Map<String, Object>> fetchProducts(boolean open);
 }
