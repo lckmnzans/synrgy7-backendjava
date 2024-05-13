@@ -127,4 +127,16 @@ public class ProductServerController {
             return new ResponseEntity<>(new Response.Error(e.getLocalizedMessage()), HttpStatus.OK);
         }
     }
+
+    @PutMapping("product/{id}")
+    public ResponseEntity<Response> update(@PathVariable("id") String id, @RequestBody ProductDto productDto) {
+        Product product;
+        try {
+            product = modelMapper.map(productDto, Product.class);
+            product = productController.editProduct(id, product.getProductName(), product.getPrice());
+            return ResponseEntity.ok(new Response.Success(modelMapper.map(product, ProductDto.class)));
+        } catch (RuntimeException e) {
+            return new ResponseEntity<>(new Response.Error(e.getLocalizedMessage()), HttpStatus.OK);
+        }
+    }
 }

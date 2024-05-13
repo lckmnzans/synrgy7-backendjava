@@ -41,8 +41,8 @@ public class UserController {
             return user;
         } catch (RuntimeException e) {
             log.error(e.getLocalizedMessage());
+            throw e;
         }
-        return null;
     }
 
     public void showUsersDetailByUsernameLike(String s) {

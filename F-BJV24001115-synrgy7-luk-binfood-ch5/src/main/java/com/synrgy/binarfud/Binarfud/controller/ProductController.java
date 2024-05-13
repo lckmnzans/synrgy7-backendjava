@@ -86,18 +86,20 @@ public class ProductController {
         return products;
     }
 
-    public void editProduct(String productId, @Nullable String newProductName, @Nullable Double newPrice) {
+    public Product editProduct(String productId, @Nullable String newProductName, @Nullable Double newPrice) {
         Product product;
         try {
             product = productService.getProductById(productId);
             try {
-                productService.updateProduct(product, newProductName, newPrice);
+                product = productService.updateProduct(product, newProductName, newPrice);
             } catch (RuntimeException e) {
                 log.error(e.getLocalizedMessage());
                 System.out.println("Update Product \""+product.getProductName()+"\" dari merchant \""+product.getMerchant().getMerchantName()+"\" dibatalkan");
             }
+            return product;
         } catch (RuntimeException e) {
             log.error(e.getLocalizedMessage());
+            throw e;
         }
     }
 

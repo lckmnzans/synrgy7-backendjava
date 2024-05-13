@@ -1,7 +1,7 @@
 package com.synrgy.binarfud.Binarfud.controller;
 
-import com.synrgy.binarfud.Binarfud.payload.MerchantDto;
 import com.synrgy.binarfud.Binarfud.model.Merchant;
+import com.synrgy.binarfud.Binarfud.payload.MerchantDto;
 import com.synrgy.binarfud.Binarfud.payload.Response;
 import jakarta.annotation.Nullable;
 import lombok.extern.slf4j.Slf4j;
@@ -10,7 +10,9 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.*;
+import java.util.LinkedHashMap;
+import java.util.List;
+import java.util.Map;
 
 @RestController
 @RequestMapping("test")
