@@ -20,11 +20,11 @@ public class UserController {
         createUser("Sou Hayakawa","sommthe", "sothes@mail.com", "110345");
     }
 
-    public void createUser(String name, String username, String email, String pass) {
-        userService.insertUserProcedure(name, username, email, pass);
+    public boolean createUser(String name, String username, String email, String pass) {
+        return userService.insertUserProcedure(name, username, email, pass);
     }
 
-    public void showAllUsers() {
+    public void getAllUsers() {
         List<Users> users = userService.getAllUsers();
         if (users.isEmpty()) {
             System.out.println("Belum ada user di database");
@@ -33,7 +33,7 @@ public class UserController {
         }
     }
 
-    public Users showUserDetailByUsername(String username) {
+    public Users getUserDetailByUsername(String username) {
         Users user;
         try {
             user = userService.getUserByUsername(username);
@@ -45,26 +45,41 @@ public class UserController {
         }
     }
 
-    public void showUsersDetailByUsernameLike(String s) {
+    public Users getUserDetailById(String id) {
+        Users user;
+        try {
+            user = userService.getUserById(id);
+            return user;
+        } catch (RuntimeException e) {
+            log.error(e.getLocalizedMessage());
+            throw e;
+        }
+    }
+
+    public void getAllUsersByUsernameLike(String s) {
         List<Users> users = userService.getUsersByUsernameLike(s);
         users.forEach(user -> System.out.println(user.getId() +" | "+ user.getUsername() +" | "+ user.getEmailAddress()));
     }
 
-    public void deleteUser(String username) {
+    public void hardDeleteUser(String username) {
         Users user = userService.getUserByUsername(username);
         userService.hardDeleteUser(user);
     }
 
-    public void updateUser(String username, String newUsername) {
-        Users user;
+    public void deleteUser(String id) {
+        Users user = userService.getUserById(id);
+        user.setDeleted(true);
+        userService.softDeleteUser(user);
+    }
+
+    public Users updateUser(Users user) {
         try {
-            user = userService.getUserByUsername(username);
-            userService.updateUserData(user, newUsername);
-            log.debug("User username telah berhasil diupdate");
+            user = userService.updateUserData(user);
+            log.debug("User telah berhasil diupdate");
+            return user;
         } catch (RuntimeException e) {
             log.error(e.getLocalizedMessage());
-            System.out.println(username + " gagal diupdate");
+            throw e;
         }
-
     }
 }

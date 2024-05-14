@@ -20,11 +20,14 @@ public class Users {
 
     private String name;
 
+    @Column(unique = true)
     private String username;
 
     private String emailAddress;
 
     private String password;
+
+    boolean deleted = Boolean.FALSE;
 
     @OneToMany(mappedBy = "user")
     private List<Order> orderList;

@@ -2,7 +2,6 @@ package com.synrgy.binarfud.Binarfud.repository;
 
 import com.synrgy.binarfud.Binarfud.model.Users;
 import org.springframework.data.jpa.repository.JpaRepository;
-import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.jpa.repository.query.Procedure;
 import org.springframework.stereotype.Repository;
 
@@ -22,7 +21,7 @@ public interface UsersRepository extends JpaRepository<Users, UUID> {
     @Procedure(procedureName = "update_user_username")
     void updateUserUsername(UUID id, String username);
 
-    Optional<Users> findByUsername(String username);
+    Optional<Users> findByUsernameAndDeleted(String username, Boolean deleted);
 
     List<Users> findByUsernameLike(String s);
 }

@@ -1,25 +1,19 @@
 package com.synrgy.binarfud.Binarfud.controller;
 
-import com.synrgy.binarfud.Binarfud.model.Merchant;
 import com.synrgy.binarfud.Binarfud.model.Product;
-import com.synrgy.binarfud.Binarfud.payload.MerchantDto;
 import com.synrgy.binarfud.Binarfud.payload.ProductDto;
 import com.synrgy.binarfud.Binarfud.payload.Response;
 import jakarta.annotation.Nullable;
 import lombok.extern.slf4j.Slf4j;
 import org.modelmapper.ModelMapper;
-import org.modelmapper.TypeMap;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.LinkedHashMap;
 import java.util.List;
-import java.util.Map;
 
 @RestController
-@RequestMapping("test")
+@RequestMapping("api")
 @Slf4j
 public class ProductServerController {
     final
@@ -37,34 +31,6 @@ public class ProductServerController {
         this.merchantController = merchantController;
     }
 
-//    @GetMapping("products")
-//    public ResponseEntity<Response> getAllProducts(@RequestParam("open") @Nullable Boolean merchantIsOpen) {
-//        List<Product> productList = productController.showAllProducts(merchantIsOpen);
-//
-//        List<ProductDto> productDtoList = productList.stream()
-//                .map(product -> modelMapper.map(product, ProductDto.class))
-//                .toList();
-//        if (!productList.isEmpty()) {
-//            return ResponseEntity.ok(new Response.Success(productDtoList));
-//        } else {
-//            return new ResponseEntity<>(new Response.Error("products are empty"), HttpStatus.OK);
-//        }
-//    }
-//
-//    @GetMapping("products/{id}")
-//    public ResponseEntity<Response> getAllProductsByMerchant(@PathVariable("id") String id) {
-//        List<Product> productList;
-//        try {
-//             productList = merchantController.showMerchantDetail(id).getProductList();
-//             List<ProductDto> productDtoList = productList.stream()
-//                     .map(product -> modelMapper.map(product, ProductDto.class))
-//                     .toList();
-//             return ResponseEntity.ok(new Response.Success(productDtoList));
-//        } catch (RuntimeException e) {
-//            return new ResponseEntity<>(new Response.Error("merchant does not exist"), HttpStatus.OK);
-//        }
-//    }
-
     @GetMapping("product")
     public ResponseEntity<Response> getAllProducts(
             @RequestParam("id") @Nullable String merchantId,
@@ -73,11 +39,11 @@ public class ProductServerController {
         if (merchantId != null) {
             return ResponseEntity.ok(getProductsByMerchant(merchantId));
         } else {
-            return ResponseEntity.ok(getProducts(isOpen));
+            return ResponseEntity.ok(getProductsByMerchantStatus(isOpen));
         }
     }
 
-    private Response getProducts(@Nullable Boolean merchantIsOpen) {
+    private Response getProductsByMerchantStatus(@Nullable Boolean merchantIsOpen) {
         List<Product> productList = productController.showAllProducts(merchantIsOpen);
 
         List<ProductDto> productDtoList = productList.stream()
@@ -90,10 +56,10 @@ public class ProductServerController {
         }
     }
 
-    private Response getProductsByMerchant(String id) {
+    private Response getProductsByMerchant(String merchantId) {
         List<Product> productList;
         try {
-            productList = merchantController.showMerchantDetail(id).getProductList();
+            productList = merchantController.showMerchantDetail(merchantId).getProductList();
             List<ProductDto> productDtoList = productList.stream()
                     .map(product -> modelMapper.map(product, ProductDto.class))
                     .toList();
@@ -103,8 +69,8 @@ public class ProductServerController {
         }
     }
 
-    @PostMapping("merchant/{id}")
-    public ResponseEntity<Response> add(@PathVariable("id") String merchantId, @RequestBody ProductDto productDto) {
+    @PostMapping("product/{merchantId}")
+    public ResponseEntity<Response> addProduct(@PathVariable("merchantId") String merchantId, @RequestBody ProductDto productDto) {
         Product product;
         if ((productDto.getProductName() != null) && (productDto.getPrice() != null)) {
             try {
@@ -119,7 +85,7 @@ public class ProductServerController {
     }
 
     @DeleteMapping("product/{id}")
-    public ResponseEntity<Response> delete(@PathVariable("id") String id) {
+    public ResponseEntity<Response> deleteProduct(@PathVariable("id") String id) {
         try {
             productController.deleteProduct(id);
             return ResponseEntity.ok(new Response.SuccessNull("product deleted"));

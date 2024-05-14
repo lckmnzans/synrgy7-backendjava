@@ -53,7 +53,7 @@ public class MainController {
             String username = inputConsole.nextLine();
             System.out.print("password :");
             String password = inputConsole.nextLine();
-            Users user = userController.showUserDetailByUsername(username);
+            Users user = userController.getUserDetailByUsername(username);
             if (user != null) {
                 if (user.getPassword().equals(password)) {
                     System.out.println("Login sukses");

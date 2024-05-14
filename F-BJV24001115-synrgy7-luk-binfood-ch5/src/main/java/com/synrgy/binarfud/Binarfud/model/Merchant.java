@@ -1,7 +1,5 @@
 package com.synrgy.binarfud.Binarfud.model;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.synrgy.binarfud.Binarfud.payload.MerchantDto;
 import jakarta.persistence.*;
 import lombok.*;
 
