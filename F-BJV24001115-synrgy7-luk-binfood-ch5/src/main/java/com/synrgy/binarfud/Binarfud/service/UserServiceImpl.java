@@ -47,7 +47,7 @@ public class UserServiceImpl implements UserService {
         Optional<Users> user = usersRepository.findById(uuid);
         if (user.isEmpty()) {
             throw new RuntimeException("data does not exist");
-        };
+        }
         return user.get();
     }
 
@@ -75,13 +75,7 @@ public class UserServiceImpl implements UserService {
     public Users updateUserData(Users user) {
         Users oldUser = getUserNoException(user.getId());
         if (oldUser != null) {
-            if (user.getUsername() != null) oldUser.setUsername(user.getUsername());
-            if (user.getEmailAddress() != null) oldUser.setEmailAddress(user.getEmailAddress());
-            if (user.getName() != null) oldUser.setName(user.getName());
-            if (user.getPassword() != null) oldUser.setPassword(user.getPassword());
-            if ((user.getUsername() == null) && (user.getName() == null) && (user.getEmailAddress() == null) && (user.getPassword() == null)) {
-                throw new RuntimeException("value null, process cancelled");
-            }
+            assignNewUserData(oldUser, user);
         } else {
             throw new RuntimeException("user does not exist");
         }
@@ -91,15 +85,22 @@ public class UserServiceImpl implements UserService {
     }
 
     private Users getUserNoException(UUID id) {
-        Users user;
         try {
             Optional<Users> userOptional = usersRepository.findById(id);
-            if (userOptional.isEmpty()) return null;
-            user = userOptional.get();
+            return userOptional.orElse(null);
         } catch (RuntimeException e) {
             log.error(e.getLocalizedMessage());
             return null;
         }
-        return user;
+    }
+
+    private void assignNewUserData(Users oldUser, Users newUser) {
+        if (newUser.getUsername() != null) oldUser.setUsername(newUser.getUsername());
+        if (newUser.getEmailAddress() != null) oldUser.setEmailAddress(newUser.getEmailAddress());
+        if (newUser.getName() != null) oldUser.setName(newUser.getName());
+        if (newUser.getPassword() != null) oldUser.setPassword(newUser.getPassword());
+        if ((newUser.getUsername() == null) && (newUser.getName() == null) && (newUser.getEmailAddress() == null) && (newUser.getPassword() == null)) {
+            throw new RuntimeException("value null, process cancelled");
+        }
     }
 }

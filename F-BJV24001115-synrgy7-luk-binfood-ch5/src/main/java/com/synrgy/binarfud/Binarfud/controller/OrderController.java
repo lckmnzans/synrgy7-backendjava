@@ -36,11 +36,22 @@ public class OrderController {
 
     public void test() {
         String username = "lckmnzans";
+        String destinationAddress = "Jl Tj Sari VI Sumurboto, Kec Banyumanik, Kota Semarang, Jawa Tengah";
         List<OrderDetail> orders = new ArrayList<>();
+        orders.add(createOrderDetail("product id1", 2));
+        orders.add(createOrderDetail("product id2", 1));
+        createOrder(username, destinationAddress, orders);
     }
 
     public void createOrder(String username, String destinationAddress, List<OrderDetail> orderDetailList) {
-        Users user = userService.getUserByUsername(username);
+        Users user;
+        try {
+            user = userService.getUserByUsername(username);
+        } catch (RuntimeException e) {
+            log.error(e.getLocalizedMessage());
+            throw e;
+        }
+
         Order order = Order.builder()
                 .user(user)
                 .orderTime(Date.from(Instant.now()))

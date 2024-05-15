@@ -15,7 +15,7 @@ import java.util.List;
 import java.util.Map;
 
 @RestController
-@RequestMapping("test")
+@RequestMapping("api")
 @Slf4j
 public class MerchantServerController {
     final

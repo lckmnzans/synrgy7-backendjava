@@ -18,6 +18,7 @@ public class InvoiceServiceImpl implements InvoiceService {
         this.userService = userService;
     }
 
+    @Override
     public void generateInvoice(UUID userId, UUID orderId) {
 
     }
