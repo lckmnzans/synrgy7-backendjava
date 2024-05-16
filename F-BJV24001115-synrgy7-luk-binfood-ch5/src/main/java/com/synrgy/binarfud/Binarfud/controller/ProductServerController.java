@@ -44,7 +44,7 @@ public class ProductServerController {
     }
 
     private Response getProductsByMerchantStatus(@Nullable Boolean merchantIsOpen) {
-        List<Product> productList = productController.showAllProducts(merchantIsOpen);
+        List<Product> productList = productController.getAllProducts(merchantIsOpen);
 
         List<ProductDto> productDtoList = productList.stream()
                 .map(product -> modelMapper.map(product, ProductDto.class))
@@ -59,7 +59,7 @@ public class ProductServerController {
     private Response getProductsByMerchant(String merchantId) {
         List<Product> productList;
         try {
-            productList = merchantController.showMerchantDetail(merchantId).getProductList();
+            productList = merchantController.getMerchantDetail(merchantId).getProductList();
             List<ProductDto> productDtoList = productList.stream()
                     .map(product -> modelMapper.map(product, ProductDto.class))
                     .toList();

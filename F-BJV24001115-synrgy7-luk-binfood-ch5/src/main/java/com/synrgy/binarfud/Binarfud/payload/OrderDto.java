@@ -1,10 +1,7 @@
 package com.synrgy.binarfud.Binarfud.payload;
 
-import com.synrgy.binarfud.Binarfud.model.OrderDetail;
-import com.synrgy.binarfud.Binarfud.model.Users;
 import lombok.Data;
 
-import java.util.Date;
 import java.util.List;
 
 @Data

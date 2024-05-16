@@ -12,12 +12,10 @@ import java.util.List;
 @Slf4j
 public class UserController {
 
-    @Autowired
-    private UserService userService;
+    private final UserService userService;
 
-    public void test() {
-        createUser("Lukman Sanusi", "lckmnzans", "lckmnzans@gmail.com", "123");
-        createUser("Sou Hayakawa","sommthe", "sothes@mail.com", "110345");
+    public UserController(UserService userService) {
+        this.userService = userService;
     }
 
     public boolean createUser(String name, String username, String email, String pass) {

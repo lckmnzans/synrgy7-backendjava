@@ -6,9 +6,7 @@ import com.synrgy.binarfud.Binarfud.service.MerchantService;
 import com.synrgy.binarfud.Binarfud.service.ProductService;
 import jakarta.annotation.Nullable;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
-import org.springframework.util.StopWatch;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -17,20 +15,13 @@ import java.util.Map;
 @Component
 @Slf4j
 public class ProductController {
-    @Autowired
-    private ProductService productService;
+    private final ProductService productService;
 
-    @Autowired
-    private MerchantService merchantService;
+    private final MerchantService merchantService;
 
-    public void test() {
-        String merchant1 = "ba1aecca-2b6b-4813-9ac8-12c4eb95e217";
-        String merchant2 = "cab83cc6-ff69-4f07-9144-95ec1ca3a0d9";
-        createProduct("Geprek Bakar", 10000.0, merchant1);
-        createProduct("Geprek Mozarella", 12000.0, merchant1);
-        createProduct("Nasi Goreng Ayam", 12000.0, merchant2);
-        createProduct("Bakmi Goreng", 14000.0, merchant2);
-        createProduct("Bakmi Kuah", 14000.0, merchant2);
+    public ProductController(ProductService productService, MerchantService merchantService) {
+        this.productService = productService;
+        this.merchantService = merchantService;
     }
 
     public Product createProduct(String productName, Double price, String merchantId) {
@@ -50,7 +41,7 @@ public class ProductController {
         }
     }
 
-    public List<Product> showAllProducts(@Nullable Boolean merchantIsOpen) {
+    public List<Product> getAllProducts(@Nullable Boolean merchantIsOpen) {
         List<Merchant> merchants;
         if (merchantIsOpen != null) {
             merchants = merchantService.getAllMerchantFilter(merchantIsOpen);
@@ -64,7 +55,7 @@ public class ProductController {
         return products;
     }
 
-    public Product showProduct(String productId) {
+    public Product getProduct(String productId) {
         Product product;
         try {
             product = productService.getProductById(productId);
@@ -75,16 +66,9 @@ public class ProductController {
         return null;
     }
 
-    public List<Product> showProductsByMerchant(String merchantId) {
-        StopWatch sw = new StopWatch();
-        sw.start();
+    public List<Product> getAllProductsByMerchant(String merchantId) {
         Merchant merchant = merchantService.getMerchantById(merchantId);
-        List<Product> products = merchant.getProductList();
-        sw.stop();
-        if (sw.getTotalTimeSeconds() > 2) log.warn("Proses berjalan > 2 detik");
-//        System.out.println("Produk dari merchant " + merchant.getMerchantName());
-//        products.forEach(product -> System.out.println(product.getProductName() + " | " + product.getPrice()));
-        return products;
+        return merchant.getProductList();
     }
 
     public Product editProduct(String productId, @Nullable String newProductName, @Nullable Double newPrice) {
@@ -120,7 +104,6 @@ public class ProductController {
     }
 
     public List<Map<String, Object>> fetchProduct(boolean open) {
-        List<Map<String, Object>> products = productService.fetchProducts(open);
-        return products;
+        return productService.fetchProducts(open);
     }
 }

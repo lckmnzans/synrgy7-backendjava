@@ -41,9 +41,9 @@ public class MerchantServerController {
     public ResponseEntity<Response> getMerchants(@RequestParam("open") @Nullable Boolean isOpen) {
         List<Merchant> merchantList;
         if (isOpen != null) {
-            merchantList = merchantController.showAllMerchants(isOpen);
+            merchantList = merchantController.getAllMerchants(isOpen);
         } else {
-            merchantList = merchantController.showAllMerchants();
+            merchantList = merchantController.getAllMerchants();
         }
         List<MerchantDto> merchantDtoList = merchantList.stream()
                 .map(merchant -> modelMapper.map(merchant, MerchantDto.class))
@@ -57,7 +57,7 @@ public class MerchantServerController {
     public ResponseEntity<Response> getMerchantById(@PathVariable("id") String id) {
         Merchant merchant;
         try {
-            merchant = merchantController.showMerchantDetail(id);
+            merchant = merchantController.getMerchantDetail(id);
             return ResponseEntity.ok(new Response.Success(modelMapper.map(merchant, MerchantDto.class)));
         } catch (RuntimeException e) {
             return new ResponseEntity<>(new Response.Error("merchant does not exist"), HttpStatus.OK);
@@ -67,7 +67,7 @@ public class MerchantServerController {
     @PutMapping("merchant/{id}")
     public ResponseEntity<Response> updateOpenStatus(@PathVariable("id") String id, @RequestBody MerchantDto merchantDto) {
         Merchant merchant = modelMapper.map(merchantDto, Merchant.class);
-        merchant = merchantController.editMerchantsOpenStatus(id, merchant.isOpen());
+        merchant = merchantController.editMerchantOpenStatus(id, merchant.isOpen());
         if (merchant != null) {
             return ResponseEntity.ok(new Response.Success(modelMapper.map(merchant, MerchantDto.class)));
         } else {

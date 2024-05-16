@@ -3,7 +3,7 @@ package com.synrgy.binarfud.Binarfud.payload;
 public sealed class Response {
     private final String status;
 
-    protected Response(String status) {
+    private Response(String status) {
         this.status = status;
     }
 

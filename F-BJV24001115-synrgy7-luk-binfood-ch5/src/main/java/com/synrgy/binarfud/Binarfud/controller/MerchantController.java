@@ -12,12 +12,10 @@ import java.util.List;
 @Component
 @Slf4j
 public class MerchantController {
-    @Autowired
-    private MerchantService merchantService;
+    private final MerchantService merchantService;
 
-    public void test() {
-        createMerchant("Geprek Jago", "Jl Tj Sari VI No.29, Sumurboto, Banyumanik, Kota Semarang");
-        createMerchant("Bakmi 99 Pak Joko", "Jl Sumur Boto Bar. III, Sumurboto, Banyumanik, Kota Semarang");
+    public MerchantController(MerchantService merchantService) {
+        this.merchantService = merchantService;
     }
 
     public Merchant createMerchant(String merchantName, String merchantLocation) {
@@ -28,7 +26,7 @@ public class MerchantController {
         return merchantService.insertMerchant(merchant);
     }
 
-    public Merchant showMerchantDetail(String merchantId) {
+    public Merchant getMerchantDetail(String merchantId) {
         Merchant merchant;
         try {
             merchant = merchantService.getMerchantById(merchantId);
@@ -40,7 +38,7 @@ public class MerchantController {
         }
     }
 
-    public List<Merchant> showAllMerchants(@Nullable Boolean isOpen) {
+    public List<Merchant> getAllMerchants(@Nullable Boolean isOpen) {
         List<Merchant> merchantList;
 
         if (isOpen == null) {
@@ -57,11 +55,11 @@ public class MerchantController {
         return merchantList;
     }
 
-    public List<Merchant> showAllMerchants() {
-        return showAllMerchants(null);
+    public List<Merchant> getAllMerchants() {
+        return getAllMerchants(null);
     }
 
-    public Merchant editMerchantsOpenStatus(String id, boolean isOpened) {
+    public Merchant editMerchantOpenStatus(String id, boolean isOpened) {
         Merchant merchant;
         try {
             merchant = merchantService.getMerchantById(id);
