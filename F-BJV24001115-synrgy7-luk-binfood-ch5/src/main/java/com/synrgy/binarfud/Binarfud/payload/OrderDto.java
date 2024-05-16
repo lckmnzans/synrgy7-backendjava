@@ -1,5 +1,6 @@
 package com.synrgy.binarfud.Binarfud.payload;
 
+import com.synrgy.binarfud.Binarfud.model.Users;
 import lombok.Data;
 
 import java.util.List;

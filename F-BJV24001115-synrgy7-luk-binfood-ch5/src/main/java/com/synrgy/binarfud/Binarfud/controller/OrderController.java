@@ -4,16 +4,11 @@ import com.synrgy.binarfud.Binarfud.model.Order;
 import com.synrgy.binarfud.Binarfud.model.OrderDetail;
 import com.synrgy.binarfud.Binarfud.model.Product;
 import com.synrgy.binarfud.Binarfud.model.Users;
-import com.synrgy.binarfud.Binarfud.service.OrderDetailService;
-import com.synrgy.binarfud.Binarfud.service.OrderService;
-import com.synrgy.binarfud.Binarfud.service.ProductService;
-import com.synrgy.binarfud.Binarfud.service.UserService;
+import com.synrgy.binarfud.Binarfud.service.*;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import java.time.Instant;
-import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -28,11 +23,14 @@ public class OrderController {
 
     private final ProductService productService;
 
-    public OrderController(OrderService orderService, OrderDetailService orderDetailService, UserService userService, ProductService productService) {
+    private final JasperService jasperService;
+
+    public OrderController(OrderService orderService, OrderDetailService orderDetailService, UserService userService, ProductService productService, JasperService jasperService) {
         this.orderService = orderService;
         this.orderDetailService = orderDetailService;
         this.userService = userService;
         this.productService = productService;
+        this.jasperService = jasperService;
     }
 
     public void createOrder(String username, String destinationAddress, List<OrderDetail> orderDetailList) {

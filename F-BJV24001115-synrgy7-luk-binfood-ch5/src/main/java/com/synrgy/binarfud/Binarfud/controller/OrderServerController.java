@@ -4,12 +4,14 @@ import com.synrgy.binarfud.Binarfud.model.Order;
 import com.synrgy.binarfud.Binarfud.model.OrderDetail;
 import com.synrgy.binarfud.Binarfud.payload.OrderDto;
 import com.synrgy.binarfud.Binarfud.payload.Response;
+import com.synrgy.binarfud.Binarfud.service.JasperService;
 import org.modelmapper.ModelMapper;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
+import org.springframework.core.io.ByteArrayResource;
+import org.springframework.core.io.Resource;
+import org.springframework.http.*;
 import org.springframework.web.bind.annotation.*;
 
+import javax.print.attribute.standard.Media;
 import java.util.List;
 
 @RestController
@@ -25,10 +27,14 @@ public class OrderServerController {
     final
     UserController userController;
 
-    public OrderServerController(ModelMapper modelMapper, OrderController orderController, UserController userController) {
+    final
+    JasperService jasperService;
+
+    public OrderServerController(ModelMapper modelMapper, OrderController orderController, UserController userController, JasperService jasperService) {
         this.modelMapper = modelMapper;
         this.orderController = orderController;
         this.userController = userController;
+        this.jasperService = jasperService;
     }
 
     @PostMapping("order")
@@ -49,5 +55,19 @@ public class OrderServerController {
     public ResponseEntity<Response> getAllOrders(@PathVariable("username") String username) {
         List<Order> orderDetailList = userController.getUserDetailByUsername(username).getOrderList();
         return null;
+    }
+
+    @GetMapping("order/generate/{format}")
+    public ResponseEntity<Resource> getReport(@PathVariable("format") String format) {
+        List<Order> orderList = orderController.getAllOrders();
+
+        byte[] reportContent = jasperService.getReport(orderList, format);
+
+        ByteArrayResource resource = new ByteArrayResource(reportContent);
+        return ResponseEntity.ok()
+                .contentType(MediaType.APPLICATION_OCTET_STREAM)
+                .contentLength(resource.contentLength())
+                .header(HttpHeaders.CONTENT_DISPOSITION, ContentDisposition.attachment().filename("order-list."+format).build().toString())
+                .body(resource);
     }
 }
