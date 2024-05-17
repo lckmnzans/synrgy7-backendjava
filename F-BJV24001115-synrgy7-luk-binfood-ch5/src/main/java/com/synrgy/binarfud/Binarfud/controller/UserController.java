@@ -1,83 +1,71 @@
 package com.synrgy.binarfud.Binarfud.controller;
 
 import com.synrgy.binarfud.Binarfud.model.Users;
-import com.synrgy.binarfud.Binarfud.service.UserService;
-import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Component;
+import com.synrgy.binarfud.Binarfud.payload.Response;
+import com.synrgy.binarfud.Binarfud.payload.UserDto;
+import org.modelmapper.ModelMapper;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.*;
 
-import java.util.List;
+import java.util.UUID;
 
-@Component
-@Slf4j
+@RestController
+@RequestMapping("api")
 public class UserController {
+    final
+    ModelMapper modelMapper;
 
-    private final UserService userService;
+    final
+    UserUtil userUtil;
 
-    public UserController(UserService userService) {
-        this.userService = userService;
+    public UserController(UserUtil userUtil, ModelMapper modelMapper) {
+        this.userUtil = userUtil;
+        this.modelMapper = modelMapper;
     }
 
-    public boolean createUser(String name, String username, String email, String pass) {
-        return userService.insertUserProcedure(name, username, email, pass);
-    }
-
-    public void getAllUsers() {
-        List<Users> users = userService.getAllUsers();
-        if (users.isEmpty()) {
-            System.out.println("Belum ada user di database");
-        } else {
-            users.forEach(user -> System.out.println("username :" + user.getUsername()));
-        }
-    }
-
-    public Users getUserDetailByUsername(String username) {
+    @GetMapping("user/{username}")
+    public ResponseEntity<Response> getUser(@PathVariable("username") String username) {
         Users user;
         try {
-            user = userService.getUserByUsername(username);
-            log.info(user.getId() +" | "+ user.getUsername() +" | "+ user.getEmailAddress());
-            return user;
+            user = userUtil.getUserDetailByUsername(username);
+            return ResponseEntity.ok(new Response.Success(modelMapper.map(user, UserDto.class)));
         } catch (RuntimeException e) {
-            log.error(e.getLocalizedMessage());
-            throw e;
+            return new ResponseEntity<>(new Response.Error(e.getLocalizedMessage()), HttpStatus.OK);
         }
     }
 
-    public Users getUserDetailById(String id) {
+    @PostMapping("user")
+    public ResponseEntity<Response> add(@RequestBody UserDto userDto) {
         Users user;
         try {
-            user = userService.getUserById(id);
-            return user;
+            user = modelMapper.map(userDto, Users.class);
+            userUtil.createUser(user.getName(), user.getUsername(), user.getEmailAddress(), user.getPassword());
+            return ResponseEntity.ok(new Response.SuccessNull("user sukses dibuat"));
         } catch (RuntimeException e) {
-            log.error(e.getLocalizedMessage());
-            throw e;
+            return new ResponseEntity<>(new Response.Error(e.getMessage()), HttpStatus.OK);
         }
     }
 
-    public void getAllUsersByUsernameLike(String s) {
-        List<Users> users = userService.getUsersByUsernameLike(s);
-        users.forEach(user -> System.out.println(user.getId() +" | "+ user.getUsername() +" | "+ user.getEmailAddress()));
-    }
-
-    public void hardDeleteUser(String username) {
-        Users user = userService.getUserByUsername(username);
-        userService.hardDeleteUser(user);
-    }
-
-    public void deleteUser(String id) {
-        Users user = userService.getUserById(id);
-        user.setDeleted(true);
-        userService.softDeleteUser(user);
-    }
-
-    public Users updateUser(Users user) {
+    @DeleteMapping("user/{id}")
+    public ResponseEntity<Response> delete(@PathVariable("id") String userId) {
         try {
-            user = userService.updateUserData(user);
-            log.debug("User telah berhasil diupdate");
-            return user;
+            userUtil.deleteUser(userId);
+            return ResponseEntity.ok(new Response.SuccessNull("user sukses dihapus"));
         } catch (RuntimeException e) {
-            log.error(e.getLocalizedMessage());
-            throw e;
+            return new ResponseEntity<>(new Response.Error(e.getLocalizedMessage()), HttpStatus.OK);
+        }
+    }
+
+    @PutMapping("user/{id}")
+    public ResponseEntity<Response> update(@PathVariable("id") String userId, @RequestBody UserDto userDto) {
+        Users user = modelMapper.map(userDto, Users.class);
+        user.setId(UUID.fromString(userId));
+        try {
+            user = userUtil.updateUser(user);
+            return ResponseEntity.ok(new Response.Success(modelMapper.map(user, UserDto.class)));
+        } catch (RuntimeException e) {
+            return new ResponseEntity<>(new Response.Error(e.getLocalizedMessage()), HttpStatus.OK);
         }
     }
 }

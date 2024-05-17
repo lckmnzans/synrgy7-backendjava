@@ -2,132 +2,97 @@ package com.synrgy.binarfud.Binarfud.controller;
 
 import com.synrgy.binarfud.Binarfud.model.Order;
 import com.synrgy.binarfud.Binarfud.model.OrderDetail;
-import com.synrgy.binarfud.Binarfud.model.Product;
 import com.synrgy.binarfud.Binarfud.model.Users;
-import com.synrgy.binarfud.Binarfud.service.*;
-import lombok.extern.slf4j.Slf4j;
-import org.springframework.stereotype.Component;
+import com.synrgy.binarfud.Binarfud.payload.OrderDetailDto;
+import com.synrgy.binarfud.Binarfud.payload.OrderDto;
+import com.synrgy.binarfud.Binarfud.payload.Response;
+import com.synrgy.binarfud.Binarfud.service.InvoiceService;
+import org.modelmapper.ModelMapper;
+import org.springframework.core.io.ByteArrayResource;
+import org.springframework.core.io.Resource;
+import org.springframework.http.*;
+import org.springframework.web.bind.annotation.*;
 
-import java.time.Instant;
-import java.util.Date;
 import java.util.List;
 
-@Component
-@Slf4j
+@RestController
+@RequestMapping("api")
 public class OrderController {
-    private final OrderService orderService;
 
-    private final OrderDetailService orderDetailService;
+    final
+    ModelMapper modelMapper;
 
-    private final UserService userService;
+    final
+    OrderUtil orderUtil;
 
-    private final ProductService productService;
+    final
+    UserUtil userUtil;
 
-    private final JasperService jasperService;
+    final
+    InvoiceService invoiceService;
 
-    public OrderController(OrderService orderService, OrderDetailService orderDetailService, UserService userService, ProductService productService, JasperService jasperService) {
-        this.orderService = orderService;
-        this.orderDetailService = orderDetailService;
-        this.userService = userService;
-        this.productService = productService;
-        this.jasperService = jasperService;
+    public OrderController(ModelMapper modelMapper, OrderUtil orderUtil, UserUtil userUtil, InvoiceService invoiceService) {
+        this.modelMapper = modelMapper;
+        this.orderUtil = orderUtil;
+        this.userUtil = userUtil;
+        this.invoiceService = invoiceService;
     }
 
-    public Order createOrder(String username, String destinationAddress, List<OrderDetail> orderDetailList) {
-        Users user;
+    @PostMapping("order")
+    public ResponseEntity<Response> add(@RequestBody OrderDto orderDto) {
+        List<OrderDetail> orderDetailList = orderDto.getOrderDetailList().stream()
+                .map(orderDetailDto -> orderUtil.createOrderDetail(orderDetailDto.getId(), orderDetailDto.getQuantity()))
+                .toList();
         try {
-            user = userService.getUserByUsername(username);
+            Order order = orderUtil.createOrder(orderDto.getUserName(), orderDto.getDestinationAddress(), orderDetailList);
+            return ResponseEntity.ok(new Response.Success(modelMapper.map(order, OrderDto.class)));
         } catch (RuntimeException e) {
-            log.error(e.getLocalizedMessage());
-            throw e;
+            return new ResponseEntity<>(new Response.Error(e.getLocalizedMessage()), HttpStatus.OK);
         }
+    }
 
-        Order order = Order.builder()
-                .user(user)
-                .orderTime(Date.from(Instant.now()))
-                .destinationAddress(destinationAddress)
-                .completed(Boolean.FALSE)
-                .build();
-        order = orderService.insertOrder(order);
+    @GetMapping("order/{username}")
+    public ResponseEntity<Response> getAllOrders(@PathVariable("username") String username) {
+        List<Order> orderDetailList = userUtil.getUserDetailByUsername(username).getOrderList();
+        List<OrderDto> orderDtoList = orderDetailList.stream()
+                .map(order -> modelMapper.map(order, OrderDto.class))
+                .toList();
+        return ResponseEntity.ok(new Response.Success(orderDtoList));
+    }
 
-        for (OrderDetail orderDetail: orderDetailList) {
-            orderDetail.setOrder(order);
+    @GetMapping("order")
+    public ResponseEntity<Response> getOrderById(@RequestParam("orderId") String orderId) {
+        Order order = orderUtil.getOrderDetail(orderId);
+        if (order != null) {
+            return ResponseEntity.ok(new Response.Success(modelMapper.map(order, OrderDto.class)));
+        } else {
+            return new ResponseEntity<>(new Response.Error("tidak ditemukan order sesuai id"), HttpStatus.OK);
         }
-
-        orderDetailList = orderDetailService.createBatchesOrder(orderDetailList);
-        order.setOrderDetailList(orderDetailList);
-        return order;
     }
 
-    public OrderDetail createOrderDetail(String productId, int qty) {
-        Product product = productService.getProductById(productId);
-        OrderDetail orderDetail = OrderDetail.builder()
-                .product(product)
-                .quantity(qty)
-                .totalPrice(product.getPrice() * qty)
-                .build();
-        log.info("Order Detail telah dibuat dengan Produk :"+product.getProductName()+" dan Jumlah :"+qty);
-        return orderDetail;
+    @GetMapping("order/page")
+    public ResponseEntity<Response> getOrders(@RequestParam("pageNumber") Integer pageNumber, @RequestParam("pageAmount") Integer pageAmount) {
+        List<OrderDetail> orderDetailList = orderUtil.getAllOrdersDetailPageable(pageNumber, pageAmount);
+        List<OrderDetailDto> orderDetailDtoList = orderDetailList.stream().map(orderDetail -> modelMapper.map(orderDetail, OrderDetailDto.class)).toList();
+        return ResponseEntity.ok(new Response.Success(orderDetailDtoList));
     }
 
-    public OrderDetail createOrderDetail(Product product, int qty) {
-        OrderDetail orderDetail = OrderDetail.builder()
-                .product(product)
-                .quantity(qty)
-                .totalPrice(product.getPrice() * qty)
-                .build();
-        log.info("Order Detail telah dibuat dengan Produk :"+product.getProductName()+" dan Jumlah :"+qty);
-        return orderDetail;
-    }
+    @GetMapping("order/generate/{username}")
+    public ResponseEntity<Resource> getReport(@PathVariable("username") String username, @RequestParam("orderId") String orderId) {
+        String userId;
+        try {
+            Users user = userUtil.getUserDetailByUsername(username);
+            userId = user.getId().toString();
+        } catch (RuntimeException e) {
+            return new ResponseEntity<>(null, HttpStatus.NOT_FOUND);
+        }
+        byte[] reportContent = invoiceService.generateInvoice(userId, orderId);
 
-    public List<Order> getAllOrders() {
-        List<Order> orderList = orderService.getAllOrders();
-        orderList.forEach(order ->
-                log.info(order.getId() +" | "+ order.getOrderTime() +" | "+ order.getUser().getUsername() +" | "+ order.getDestinationAddress())
-        );
-        return orderList;
-    }
-
-    public void getAllOrdersByUser(String username) {
-        Users user = userService.getUserByUsername(username);
-        List<Order> orderList = orderService.getAllOrdersByUser(user);
-        orderList.forEach(order ->
-                log.info(order.getId() +" | "+ order.getOrderTime() +" | "+ order.getUser().getUsername() +" | "+ order.getDestinationAddress())
-        );
-    }
-
-    public List<OrderDetail> getAllOrdersDetail() {
-        List<OrderDetail> orderDetailList = orderDetailService.getAllOrdersDetail();
-        orderDetailList.forEach(orderDetail ->
-                log.info(orderDetail.getId().toString())
-        );
-        return orderDetailList;
-    }
-
-    public List<OrderDetail> getAllOrdersDetailPageable(int pageNumber, int pageAmount) {
-        List<OrderDetail> orderDetailList = orderDetailService.getAllOrdersDetailPageable(pageNumber, pageAmount);
-        orderDetailList.forEach(orderDetail ->
-                log.info(orderDetail.getProduct().getProductName() +" | "+ orderDetail.getQuantity() +" | "+ orderDetail.getTotalPrice())
-        );
-        return orderDetailList;
-    }
-
-    public void getOrderDetail(String orderId) {
-        Order order = orderService.getOrder(orderId);
-        order.getOrderDetailList().forEach(orderDetail ->
-                log.info(orderDetail.getProduct().getProductName() +" | "+ orderDetail.getQuantity() +" | "+ orderDetail.getTotalPrice())
-        );
-    }
-
-    public void editOrderStatus(String orderId, boolean completedStatus) {
-        Order order = orderService.getOrder(orderId);
-        order.setCompleted(completedStatus);
-        orderService.updateOrderStatus(order);
-        log.debug("Order status berhasil dirubah");
-    }
-
-    public void deleteOrder(String orderId) {
-        Order order = orderService.getOrder(orderId);
-        orderService.deleteOrder(order);
+        ByteArrayResource resource = new ByteArrayResource(reportContent);
+        return ResponseEntity.ok()
+                .contentType(MediaType.APPLICATION_OCTET_STREAM)
+                .contentLength(resource.contentLength())
+                .header(HttpHeaders.CONTENT_DISPOSITION, ContentDisposition.attachment().filename("order-list.pdf").build().toString())
+                .body(resource);
     }
 }

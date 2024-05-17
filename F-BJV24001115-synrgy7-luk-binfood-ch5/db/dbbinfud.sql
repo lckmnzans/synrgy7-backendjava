@@ -30,6 +30,19 @@ $$;
 ALTER PROCEDURE public.delete_user_data(IN "ID" uuid) OWNER TO postgres;
 
 --
+-- Name: get_merchant_report(uuid, timestamp without time zone, timestamp without time zone); Type: PROCEDURE; Schema: public; Owner: postgres
+--
+
+CREATE PROCEDURE public.get_merchant_report(IN "MerchantId" uuid, IN "StartDate" timestamp without time zone, IN "EndDate" timestamp without time zone)
+    LANGUAGE sql
+    AS $$
+select * from public."order" o inner join public.order_detail od on o.id=od.order_id where o.order_time < "EndDate" and o.order_time > "StartDate";
+$$;
+
+
+ALTER PROCEDURE public.get_merchant_report(IN "MerchantId" uuid, IN "StartDate" timestamp without time zone, IN "EndDate" timestamp without time zone) OWNER TO postgres;
+
+--
 -- Name: insert_user_data(character varying, character varying, character varying); Type: PROCEDURE; Schema: public; Owner: postgres
 --
 
@@ -167,6 +180,10 @@ f	2024-05-17 16:35:58.537	6665253c-45f0-43d3-a3d6-b3a414e0236e	ff15ed0d-1d69-4ae
 f	2024-05-17 17:08:09.31	09504bca-d5e4-4327-b514-cd33bc3dcf21	ff15ed0d-1d69-4ae9-a9a1-7152259d7307	Jl Tj Sari VI No 29, Sumurboto, Kec Banyumanik, Kota Semarang, Jawa Tengah
 f	2024-05-17 17:12:45.057	80e7d513-f8f2-4b36-bc55-8f7647b8743e	ff15ed0d-1d69-4ae9-a9a1-7152259d7307	Jl Tj Sari VI No 29, Sumurboto, Kec Banyumanik, Kota Semarang, Jawa Tengah
 f	2024-05-17 17:13:39.68	4bcaa929-35c3-48d8-beec-fbc3f93d2058	ff15ed0d-1d69-4ae9-a9a1-7152259d7307	Jl Tj Sari VI No 29, Sumurboto, Kec Banyumanik, Kota Semarang, Jawa Tengah
+f	2024-05-17 18:59:11.023	d098133f-1b16-42cf-af0b-7a9505bf49fd	ff15ed0d-1d69-4ae9-a9a1-7152259d7307	Jl Tj Sari VI No 29, Sumurboto, Kec Banyumanik, Kota Semarang, Jawa Tengah
+f	2024-05-17 19:01:15.399	cfa7b820-3dfb-491b-bc68-bbf099445434	ff15ed0d-1d69-4ae9-a9a1-7152259d7307	Jl Tj Sari VI No 29, Sumurboto, Kec Banyumanik, Kota Semarang, Jawa Tengah
+f	2024-05-17 19:04:47.099	878041cd-792b-47a1-8546-9989da24ab61	ff15ed0d-1d69-4ae9-a9a1-7152259d7307	Jl Tj Sari VI No 29, Sumurboto, Kec Banyumanik, Kota Semarang, Jawa Tengah
+f	2024-05-17 19:07:55.824	51e418b5-5306-4441-8b24-37fbdb7aee8d	ff15ed0d-1d69-4ae9-a9a1-7152259d7307	Jl Tj Sari VI No 29, Sumurboto, Kec Banyumanik, Kota Semarang, Jawa Tengah
 \.
 
 
@@ -187,6 +204,11 @@ COPY public.order_detail (quantity, total_price, id, order_id, product_id) FROM 
 1	20000	5b50ab55-a131-4f2f-8c5a-391dbcaae51d	80e7d513-f8f2-4b36-bc55-8f7647b8743e	42b074d5-405f-4738-8160-eba75ce2ae31
 2	32000	e3183001-8f92-489a-a347-489d68b9cff6	80e7d513-f8f2-4b36-bc55-8f7647b8743e	2488151c-4398-4256-b483-67fa50b688b3
 4	80000	df019eaf-3173-4558-a6a2-cfc51c711963	4bcaa929-35c3-48d8-beec-fbc3f93d2058	42b074d5-405f-4738-8160-eba75ce2ae31
+4	80000	eec4b7f0-7d72-4cc7-af99-d67292824239	d098133f-1b16-42cf-af0b-7a9505bf49fd	42b074d5-405f-4738-8160-eba75ce2ae31
+2	40000	ca057103-8169-40a6-b4b3-994fd9194d15	d098133f-1b16-42cf-af0b-7a9505bf49fd	b126f224-e7e4-41ba-ae5e-b5c677a94773
+2	40000	cb3a8c79-4a83-44b4-ad70-fb83c0972a42	cfa7b820-3dfb-491b-bc68-bbf099445434	b126f224-e7e4-41ba-ae5e-b5c677a94773
+10	200000	1f978899-c6ae-4106-9a85-d06042109f27	878041cd-792b-47a1-8546-9989da24ab61	b126f224-e7e4-41ba-ae5e-b5c677a94773
+3	60000	4e9138e7-5a3a-4f18-a77e-7c38acbb25de	51e418b5-5306-4441-8b24-37fbdb7aee8d	b126f224-e7e4-41ba-ae5e-b5c677a94773
 \.
 
 
@@ -209,6 +231,7 @@ COPY public.product (price, id, merchant_id, product_name) FROM stdin;
 COPY public.users (deleted, id, email_address, name, password, username) FROM stdin;
 f	ff15ed0d-1d69-4ae9-a9a1-7152259d7307	lckmnzans@mail.co	Lukman Sanusi	123	lckmnzans
 f	b7eb6520-7c31-405d-92e2-26b57635da9f	sayloveu@mail.co	Shaina Oline	1212	shayooo
+f	dea1c120-b351-479b-bfed-38963913af86	tayloring@mail.co	Taylor Lautner	oiu123	tailoringgg
 \.
 
 

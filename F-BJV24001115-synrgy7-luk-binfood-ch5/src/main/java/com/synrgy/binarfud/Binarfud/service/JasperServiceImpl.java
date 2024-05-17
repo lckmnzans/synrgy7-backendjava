@@ -3,7 +3,6 @@ package com.synrgy.binarfud.Binarfud.service;
 import com.synrgy.binarfud.Binarfud.model.Order;
 import com.synrgy.binarfud.Binarfud.model.OrderDetail;
 import com.synrgy.binarfud.Binarfud.model.Users;
-import com.synrgy.binarfud.Binarfud.payload.OrderDto;
 import net.sf.jasperreports.engine.*;
 import net.sf.jasperreports.engine.data.JRBeanCollectionDataSource;
 import net.sf.jasperreports.engine.util.JRLoader;
@@ -16,7 +15,6 @@ import java.io.FileNotFoundException;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.Optional;
 
 @Service
 public class JasperServiceImpl implements JasperService {
@@ -40,6 +38,8 @@ public class JasperServiceImpl implements JasperService {
         JRBeanCollectionDataSource dataSource = new JRBeanCollectionDataSource(orderDetailList);
 
         Map<String, Object> params = new HashMap<>();
+        params.put("orderId", order.getId());
+        params.put("orderTime", order.getOrderTime().toString().substring(0, 19));
         params.put("username", user.getUsername());
 
         JasperPrint jasperPrint;

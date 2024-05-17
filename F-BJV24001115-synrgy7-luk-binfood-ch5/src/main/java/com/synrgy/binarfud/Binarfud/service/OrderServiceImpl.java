@@ -7,10 +7,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.Collections;
-import java.util.List;
-import java.util.Optional;
-import java.util.UUID;
+import java.util.*;
 
 @Service
 @Slf4j
@@ -45,6 +42,11 @@ public class OrderServiceImpl implements OrderService {
         List<Order> orderList = orderRepository.findAllByUser(user);
         if (orderList.isEmpty()) return Collections.emptyList();
         return orderList;
+    }
+
+    @Override
+    public List<Order> getAllOrdersInBetween(Date startDate, Date endDate) {
+        return orderRepository.findByOrderTimeBetween(startDate, endDate);
     }
 
     @Override
