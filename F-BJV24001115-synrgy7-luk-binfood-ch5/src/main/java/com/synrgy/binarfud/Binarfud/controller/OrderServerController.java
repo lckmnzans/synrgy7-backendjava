@@ -69,14 +69,14 @@ public class OrderServerController {
 
     @GetMapping("order/generate/{username}")
     public ResponseEntity<Resource> getReport(@PathVariable("username") String username, @RequestParam("format") String format) {
-        List<Order> orderList = orderController.getAllOrders();
+        List<OrderDetail> orderDetailList = orderController.getAllOrdersDetail();
         Users user;
         try {
             user = userController.getUserDetailByUsername(username);
         } catch (RuntimeException e) {
             return new ResponseEntity<>(null, HttpStatus.NOT_FOUND);
         }
-        byte[] reportContent = jasperService.generate(orderList, user, format);
+        byte[] reportContent = jasperService.generate(orderDetailList, user, format);
 
         ByteArrayResource resource = new ByteArrayResource(reportContent);
         return ResponseEntity.ok()

@@ -3,8 +3,8 @@
 <jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="item-report" pageWidth="320" pageHeight="790" columnWidth="300" leftMargin="10" rightMargin="10" topMargin="20" bottomMargin="20" uuid="b6713798-c0a0-43ab-8b2e-7bf437b3d797">
     <parameter name="username" class="java.lang.String" isForPrompting="false"/>
     <field name="id" class="java.util.UUID"/>
-    <field name="orderTime" class="java.util.Date"/>
-    <field name="destinationAddress" class="java.lang.String"/>
+    <field name="product" class="com.synrgy.binarfud.Binarfud.model.Product"/>
+    <field name="quantity" class="java.lang.Integer"/>
     <title>
         <band height="50" splitType="Stretch">
             <staticText>
@@ -28,14 +28,14 @@
                 <box>
                     <pen lineWidth="1.0" lineColor="#000000"/>
                 </box>
-                <textFieldExpression><![CDATA[$F{id}]]></textFieldExpression>
+                <textFieldExpression>$F{product}.getProductName()</textFieldExpression>
             </textField>
             <textField textAdjust="StretchHeight" isBlankWhenNull="true">
                 <reportElement x="120" y="0" width="160" height="40" uuid="e9a436df-efa3-4365-9558-578c8a8b4621"/>
                 <box>
                     <pen lineWidth="1.0" lineColor="#000000"/>
                 </box>
-                <textFieldExpression><![CDATA[$F{orderTime}]]></textFieldExpression>
+                <textFieldExpression><![CDATA[$F{quantity}]]></textFieldExpression>
             </textField>
         </band>
     </detail>

@@ -95,11 +95,12 @@ public class OrderController {
         );
     }
 
-    public void getAllOrdersDetail() {
+    public List<OrderDetail> getAllOrdersDetail() {
         List<OrderDetail> orderDetailList = orderDetailService.getAllOrdersDetail();
         orderDetailList.forEach(orderDetail ->
                 log.info(orderDetail.getId().toString())
         );
+        return orderDetailList;
     }
 
     public List<OrderDetail> getAllOrdersDetailPageable(int pageNumber, int pageAmount) {
