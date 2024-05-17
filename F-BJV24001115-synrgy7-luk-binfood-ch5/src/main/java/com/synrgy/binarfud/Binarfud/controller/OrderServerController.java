@@ -41,7 +41,7 @@ public class OrderServerController {
 
     @PostMapping("order")
     public ResponseEntity<Response> add(@RequestBody OrderDto orderDto) {
-        List<OrderDetail> orderDetailList = orderDto.getOrderDetailDtoList().stream()
+        List<OrderDetail> orderDetailList = orderDto.getOrderDetailList().stream()
                 .map(orderDetailDto -> orderController.createOrderDetail(orderDetailDto.getId(), orderDetailDto.getQuantity()))
                 .toList();
         try {

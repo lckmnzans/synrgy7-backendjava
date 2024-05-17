@@ -18,9 +18,10 @@ public class OrderDetailServiceImpl implements OrderDetailService {
     private OrderDetailRepository orderDetailRepository;
 
     @Override
-    public void createBatchesOrder(List<OrderDetail> orderDetailList) {
-        orderDetailRepository.saveAll(orderDetailList);
+    public List<OrderDetail> createBatchesOrder(List<OrderDetail> orderDetailList) {
+        orderDetailList = orderDetailRepository.saveAll(orderDetailList);
         log.info("All OrderDetail is successfully created");
+        return orderDetailList;
     }
 
     @Override

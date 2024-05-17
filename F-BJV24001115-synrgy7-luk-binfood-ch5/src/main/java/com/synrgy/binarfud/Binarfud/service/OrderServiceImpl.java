@@ -21,7 +21,7 @@ public class OrderServiceImpl implements OrderService {
     @Override
     public Order insertOrder(Order order) {
         order = orderRepository.save(order);
-        log.info("Order Data successfully created");
+        log.info("Order Data with id= "+order.getId()+" successfully created");
         return order;
     }
 

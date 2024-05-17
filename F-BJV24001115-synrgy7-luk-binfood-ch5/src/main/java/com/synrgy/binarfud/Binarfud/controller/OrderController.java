@@ -54,7 +54,8 @@ public class OrderController {
             orderDetail.setOrder(order);
         }
 
-        orderDetailService.createBatchesOrder(orderDetailList);
+        orderDetailList = orderDetailService.createBatchesOrder(orderDetailList);
+        order.setOrderDetailList(orderDetailList);
         return order;
     }
 

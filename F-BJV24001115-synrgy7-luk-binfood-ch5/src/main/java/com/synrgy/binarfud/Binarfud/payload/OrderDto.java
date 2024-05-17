@@ -9,7 +9,7 @@ import java.util.List;
 public class OrderDto {
     private String userName;
     private String destinationAddress;
-    private List<OrderDetailDto> orderDetailDtoList;
+    private List<OrderDetailDto> orderDetailList;
 
     public void setUser(Users user) {
         this.userName = user.getUsername();
