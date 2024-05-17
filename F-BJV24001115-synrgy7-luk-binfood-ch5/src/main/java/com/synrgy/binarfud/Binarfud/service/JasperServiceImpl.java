@@ -15,12 +15,13 @@ import java.io.FileNotFoundException;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 
 @Service
 public class JasperServiceImpl implements JasperService {
 
     @Override
-    public byte[] getReport(List<Order> orderList, Users user, String format) {
+    public byte[] generate(List<Order> orderList, Users user, String format) {
         JasperReport jasperReport;
         try {
             jasperReport = (JasperReport) JRLoader

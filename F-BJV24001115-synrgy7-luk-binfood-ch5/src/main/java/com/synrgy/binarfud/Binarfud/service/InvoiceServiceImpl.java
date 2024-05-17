@@ -1,10 +1,14 @@
 package com.synrgy.binarfud.Binarfud.service;
 
+import com.synrgy.binarfud.Binarfud.model.Order;
+import com.synrgy.binarfud.Binarfud.model.Users;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
 import java.util.UUID;
 
 @Service
+@Slf4j
 public class InvoiceServiceImpl implements InvoiceService {
 
     final
@@ -19,7 +23,14 @@ public class InvoiceServiceImpl implements InvoiceService {
     }
 
     @Override
-    public void generateInvoice(UUID userId, UUID orderId) {
-
+    public void generateInvoice(String userId, String orderId) {
+        Users user;
+        Order order;
+        try {
+            user = userService.getUserById(userId);
+            order = orderService.getOrder(orderId);
+        } catch (RuntimeException e) {
+            log.error(e.getLocalizedMessage());
+        }
     }
 }

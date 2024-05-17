@@ -13,7 +13,6 @@ import org.springframework.core.io.Resource;
 import org.springframework.http.*;
 import org.springframework.web.bind.annotation.*;
 
-import javax.print.attribute.standard.Media;
 import java.util.List;
 
 @RestController
@@ -77,7 +76,7 @@ public class OrderServerController {
         } catch (RuntimeException e) {
             return new ResponseEntity<>(null, HttpStatus.NOT_FOUND);
         }
-        byte[] reportContent = jasperService.getReport(orderList, user, format);
+        byte[] reportContent = jasperService.generate(orderList, user, format);
 
         ByteArrayResource resource = new ByteArrayResource(reportContent);
         return ResponseEntity.ok()
