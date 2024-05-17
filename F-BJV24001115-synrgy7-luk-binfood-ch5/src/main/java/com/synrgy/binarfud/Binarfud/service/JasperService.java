@@ -7,5 +7,5 @@ import com.synrgy.binarfud.Binarfud.model.Users;
 import java.util.List;
 
 public interface JasperService {
-    byte[] generate(List<OrderDetail> orderDetailList, Users user, String format);
+    byte[] generate(List<OrderDetail> orderDetailList, Users user, Order order, String format);
 }

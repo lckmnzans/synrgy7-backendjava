@@ -22,7 +22,7 @@ import java.util.Optional;
 public class JasperServiceImpl implements JasperService {
 
     @Override
-    public byte[] generate(List<OrderDetail> orderDetailList, Users user, String format) {
+    public byte[] generate(List<OrderDetail> orderDetailList, Users user, Order order, String format) {
         JasperReport jasperReport;
         try {
             jasperReport = (JasperReport) JRLoader

@@ -6,6 +6,7 @@ import com.synrgy.binarfud.Binarfud.model.Users;
 import com.synrgy.binarfud.Binarfud.payload.OrderDetailDto;
 import com.synrgy.binarfud.Binarfud.payload.OrderDto;
 import com.synrgy.binarfud.Binarfud.payload.Response;
+import com.synrgy.binarfud.Binarfud.service.InvoiceService;
 import com.synrgy.binarfud.Binarfud.service.JasperService;
 import org.modelmapper.ModelMapper;
 import org.springframework.core.io.ByteArrayResource;
@@ -29,13 +30,13 @@ public class OrderServerController {
     UserController userController;
 
     final
-    JasperService jasperService;
+    InvoiceService invoiceService;
 
-    public OrderServerController(ModelMapper modelMapper, OrderController orderController, UserController userController, JasperService jasperService) {
+    public OrderServerController(ModelMapper modelMapper, OrderController orderController, UserController userController, InvoiceService invoiceService) {
         this.modelMapper = modelMapper;
         this.orderController = orderController;
         this.userController = userController;
-        this.jasperService = jasperService;
+        this.invoiceService = invoiceService;
     }
 
     @PostMapping("order")
@@ -68,21 +69,21 @@ public class OrderServerController {
     }
 
     @GetMapping("order/generate/{username}")
-    public ResponseEntity<Resource> getReport(@PathVariable("username") String username, @RequestParam("format") String format) {
-        List<OrderDetail> orderDetailList = orderController.getAllOrdersDetail();
-        Users user;
+    public ResponseEntity<Resource> getReport(@PathVariable("username") String username, @RequestParam("orderId") String orderId) {
+        String userId;
         try {
-            user = userController.getUserDetailByUsername(username);
+            Users user = userController.getUserDetailByUsername(username);
+            userId = user.getId().toString();
         } catch (RuntimeException e) {
             return new ResponseEntity<>(null, HttpStatus.NOT_FOUND);
         }
-        byte[] reportContent = jasperService.generate(orderDetailList, user, format);
+        byte[] reportContent = invoiceService.generateInvoice(userId, orderId);
 
         ByteArrayResource resource = new ByteArrayResource(reportContent);
         return ResponseEntity.ok()
                 .contentType(MediaType.APPLICATION_OCTET_STREAM)
                 .contentLength(resource.contentLength())
-                .header(HttpHeaders.CONTENT_DISPOSITION, ContentDisposition.attachment().filename("order-list."+format).build().toString())
+                .header(HttpHeaders.CONTENT_DISPOSITION, ContentDisposition.attachment().filename("order-list.pdf").build().toString())
                 .body(resource);
     }
 }
