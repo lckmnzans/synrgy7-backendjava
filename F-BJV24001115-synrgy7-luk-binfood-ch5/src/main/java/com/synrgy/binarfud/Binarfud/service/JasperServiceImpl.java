@@ -1,6 +1,7 @@
 package com.synrgy.binarfud.Binarfud.service;
 
 import com.synrgy.binarfud.Binarfud.model.Order;
+import com.synrgy.binarfud.Binarfud.model.Users;
 import com.synrgy.binarfud.Binarfud.payload.OrderDto;
 import net.sf.jasperreports.engine.*;
 import net.sf.jasperreports.engine.data.JRBeanCollectionDataSource;
@@ -19,7 +20,7 @@ import java.util.Map;
 public class JasperServiceImpl implements JasperService {
 
     @Override
-    public byte[] getReport(List<Order> orderList, String format) {
+    public byte[] getReport(List<Order> orderList, Users user, String format) {
         JasperReport jasperReport;
         try {
             jasperReport = (JasperReport) JRLoader
@@ -37,7 +38,7 @@ public class JasperServiceImpl implements JasperService {
         JRBeanCollectionDataSource dataSource = new JRBeanCollectionDataSource(orderList);
 
         Map<String, Object> params = new HashMap<>();
-        params.put("total", String.valueOf(orderList.size()));
+        params.put("username", user.getUsername());
 
         JasperPrint jasperPrint;
         byte[] reportContent = null;

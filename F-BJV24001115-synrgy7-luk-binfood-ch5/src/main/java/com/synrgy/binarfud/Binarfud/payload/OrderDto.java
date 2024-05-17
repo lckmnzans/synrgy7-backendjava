@@ -10,4 +10,8 @@ public class OrderDto {
     private String userName;
     private String destinationAddress;
     private List<OrderDetailDto> orderDetailDtoList;
+
+    public void setUser(Users user) {
+        this.userName = user.getUsername();
+    }
 }

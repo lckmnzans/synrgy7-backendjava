@@ -33,7 +33,7 @@ public class OrderController {
         this.jasperService = jasperService;
     }
 
-    public void createOrder(String username, String destinationAddress, List<OrderDetail> orderDetailList) {
+    public Order createOrder(String username, String destinationAddress, List<OrderDetail> orderDetailList) {
         Users user;
         try {
             user = userService.getUserByUsername(username);
@@ -48,13 +48,14 @@ public class OrderController {
                 .destinationAddress(destinationAddress)
                 .completed(Boolean.FALSE)
                 .build();
-        orderService.insertOrder(order);
+        order = orderService.insertOrder(order);
 
         for (OrderDetail orderDetail: orderDetailList) {
             orderDetail.setOrder(order);
         }
 
         orderDetailService.createBatchesOrder(orderDetailList);
+        return order;
     }
 
     public OrderDetail createOrderDetail(String productId, int qty) {
@@ -101,11 +102,12 @@ public class OrderController {
         );
     }
 
-    public void getAllOrdersDetailPageable(int pageNumber, int pageAmount) {
+    public List<OrderDetail> getAllOrdersDetailPageable(int pageNumber, int pageAmount) {
         List<OrderDetail> orderDetailList = orderDetailService.getAllOrdersDetailPageable(pageNumber, pageAmount);
         orderDetailList.forEach(orderDetail ->
                 log.info(orderDetail.getProduct().getProductName() +" | "+ orderDetail.getQuantity() +" | "+ orderDetail.getTotalPrice())
         );
+        return orderDetailList;
     }
 
     public void getOrderDetail(String orderId) {

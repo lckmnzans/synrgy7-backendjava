@@ -50,8 +50,8 @@ ALTER PROCEDURE public.insert_user_data(IN "Username" character varying, IN "Ema
 CREATE PROCEDURE public.insert_user_data(IN "Name" character varying, IN "Username" character varying, IN "Email" character varying, IN "Pass" character varying)
     LANGUAGE sql
     AS $$
-INSERT INTO public.users (id, "name", email_address, "password", username)
- VALUES (gen_random_uuid(), "Name", "Email", "Pass", "Username");
+INSERT INTO public.users (deleted,id, "name", email_address, "password", username)
+ VALUES (false,gen_random_uuid(), "Name", "Email", "Pass", "Username");
 $$;
 
 
@@ -137,6 +137,7 @@ ALTER TABLE public.product OWNER TO postgres;
 --
 
 CREATE TABLE public.users (
+    deleted boolean NOT NULL,
     id uuid NOT NULL,
     email_address character varying(255),
     name character varying(255),
@@ -152,9 +153,7 @@ ALTER TABLE public.users OWNER TO postgres;
 --
 
 COPY public.merchant (open, id, merchant_location, merchant_name) FROM stdin;
-t	895b71ec-961c-4224-9492-6283709ee4b8	Jl Sumur Boto Bar. III, Sumurboto, Banyumanik, Kota Semarang	Bakmi 99 Pak Joko
-f	9b98a8e7-a27d-43d6-aaaf-13ea2e93428e	Jl. Banjarsari No.40, Tembalang, Kec. Tembalang, Kota Semarang, Jawa Tengah 50275	Burjo Lima
-f	592bab1b-af98-434f-9389-11900720cd7c	Jl Tj Sari VI No.29, Sumurboto, Banyumanik, Kota Semarang	Geprek Jago
+t	5870986d-a73b-47e3-a0f7-96663da9bcdb	Jl. Tj. Sari VIII, Sumurboto, Kec. Banyumanik, Kota Semarang, Jawa Tengah 50269	Tanjungsari Food
 \.
 
 
@@ -163,8 +162,11 @@ f	592bab1b-af98-434f-9389-11900720cd7c	Jl Tj Sari VI No.29, Sumurboto, Banyumani
 --
 
 COPY public."order" (completed, order_time, id, user_id, destination_address) FROM stdin;
-f	2024-05-03 19:14:58.613	b9a5d3c3-0d5e-42eb-a966-f5ee32f25fcf	d4adc60e-ac01-4703-b47a-e9265d4a8dc6	Jl Tj Sari VI No.29, Sumurboto, Banyumanik, Kota Semarang
-f	2024-05-05 04:02:24.554	073177f5-5fa7-4a83-af6f-cb16e3148adf	d4adc60e-ac01-4703-b47a-e9265d4a8dc6	Jl Tj Sari VI No.29, Sumurboto, Banyumanik, Kota Semarang
+f	2024-05-15 12:07:40.233	67a06537-df60-4d70-945b-b0c5f62f39eb	ff15ed0d-1d69-4ae9-a9a1-7152259d7307	Jl Tj Sari VI No 29, Sumurboto, Kec Banyumanik, Kota Semarang, Jawa Tengah
+f	2024-05-17 16:35:58.537	6665253c-45f0-43d3-a3d6-b3a414e0236e	ff15ed0d-1d69-4ae9-a9a1-7152259d7307	Jl Tj Sari VI No 29, Sumurboto, Kec Banyumanik, Kota Semarang, Jawa Tengah
+f	2024-05-17 17:08:09.31	09504bca-d5e4-4327-b514-cd33bc3dcf21	ff15ed0d-1d69-4ae9-a9a1-7152259d7307	Jl Tj Sari VI No 29, Sumurboto, Kec Banyumanik, Kota Semarang, Jawa Tengah
+f	2024-05-17 17:12:45.057	80e7d513-f8f2-4b36-bc55-8f7647b8743e	ff15ed0d-1d69-4ae9-a9a1-7152259d7307	Jl Tj Sari VI No 29, Sumurboto, Kec Banyumanik, Kota Semarang, Jawa Tengah
+f	2024-05-17 17:13:39.68	4bcaa929-35c3-48d8-beec-fbc3f93d2058	ff15ed0d-1d69-4ae9-a9a1-7152259d7307	Jl Tj Sari VI No 29, Sumurboto, Kec Banyumanik, Kota Semarang, Jawa Tengah
 \.
 
 
@@ -173,10 +175,18 @@ f	2024-05-05 04:02:24.554	073177f5-5fa7-4a83-af6f-cb16e3148adf	d4adc60e-ac01-470
 --
 
 COPY public.order_detail (quantity, total_price, id, order_id, product_id) FROM stdin;
-2	20000	7ac4915f-a230-4d56-aa5d-0f9798f98fa8	b9a5d3c3-0d5e-42eb-a966-f5ee32f25fcf	ce77b5c7-f060-453c-989a-e1fdb9739871
-1	10000	bbeb98e4-dba9-40e3-8d0f-23fac162297e	b9a5d3c3-0d5e-42eb-a966-f5ee32f25fcf	5314a4ba-e521-4bf6-93ce-59177c2aae1c
-2	28000	a02a991b-b1c5-4f24-b973-736daaa00bb7	073177f5-5fa7-4a83-af6f-cb16e3148adf	58c95c9f-dcae-40da-b393-16df4713ac46
-1	14000	196d26b7-fd59-4ed8-9ab6-e5f4e57e0162	073177f5-5fa7-4a83-af6f-cb16e3148adf	89028832-963a-4b87-8c9d-08ffe6d5c9fe
+2	30000	0c59ace7-75b0-41b1-afe8-9a44b5f8f7f1	67a06537-df60-4d70-945b-b0c5f62f39eb	ce26dbe9-feed-4dd8-b9f4-82e641072007
+1	20000	6fc96ab8-e8ed-4b95-bd36-36855cd3fc99	67a06537-df60-4d70-945b-b0c5f62f39eb	b126f224-e7e4-41ba-ae5e-b5c677a94773
+1	20000	5d520df8-5d19-4bdd-b235-7e15f2574b74	6665253c-45f0-43d3-a3d6-b3a414e0236e	42b074d5-405f-4738-8160-eba75ce2ae31
+4	64000	92d41042-125b-4772-88d1-ecf3a799515c	6665253c-45f0-43d3-a3d6-b3a414e0236e	2488151c-4398-4256-b483-67fa50b688b3
+2	40000	e4e77ec8-062e-4549-8ce9-051ef545dbd0	6665253c-45f0-43d3-a3d6-b3a414e0236e	b126f224-e7e4-41ba-ae5e-b5c677a94773
+1	15000	7df1b3d9-cf7f-46a1-9b77-744c47ad4657	6665253c-45f0-43d3-a3d6-b3a414e0236e	ce26dbe9-feed-4dd8-b9f4-82e641072007
+1	20000	f74abbc4-ddc4-48c9-ace4-9c042cc0dddb	09504bca-d5e4-4327-b514-cd33bc3dcf21	42b074d5-405f-4738-8160-eba75ce2ae31
+2	32000	cba5f468-d209-4235-a54f-dbb01ac512a7	09504bca-d5e4-4327-b514-cd33bc3dcf21	2488151c-4398-4256-b483-67fa50b688b3
+1	20000	ac187c3f-d913-4ba1-b828-83bef69ae753	09504bca-d5e4-4327-b514-cd33bc3dcf21	b126f224-e7e4-41ba-ae5e-b5c677a94773
+1	20000	5b50ab55-a131-4f2f-8c5a-391dbcaae51d	80e7d513-f8f2-4b36-bc55-8f7647b8743e	42b074d5-405f-4738-8160-eba75ce2ae31
+2	32000	e3183001-8f92-489a-a347-489d68b9cff6	80e7d513-f8f2-4b36-bc55-8f7647b8743e	2488151c-4398-4256-b483-67fa50b688b3
+4	80000	df019eaf-3173-4558-a6a2-cfc51c711963	4bcaa929-35c3-48d8-beec-fbc3f93d2058	42b074d5-405f-4738-8160-eba75ce2ae31
 \.
 
 
@@ -185,11 +195,10 @@ COPY public.order_detail (quantity, total_price, id, order_id, product_id) FROM 
 --
 
 COPY public.product (price, id, merchant_id, product_name) FROM stdin;
-10000	ce77b5c7-f060-453c-989a-e1fdb9739871	592bab1b-af98-434f-9389-11900720cd7c	Geprek Bakar
-14000	58c95c9f-dcae-40da-b393-16df4713ac46	895b71ec-961c-4224-9492-6283709ee4b8	Bakmi goreng
-14000	89028832-963a-4b87-8c9d-08ffe6d5c9fe	895b71ec-961c-4224-9492-6283709ee4b8	Bakmi rebus
-13000	b6be3aaa-c38c-46c8-aaa4-4d98e8bc6234	895b71ec-961c-4224-9492-6283709ee4b8	Nasi goreng ayam
-10000	5314a4ba-e521-4bf6-93ce-59177c2aae1c	592bab1b-af98-434f-9389-11900720cd7c	Geprek Mozarella
+20000	42b074d5-405f-4738-8160-eba75ce2ae31	5870986d-a73b-47e3-a0f7-96663da9bcdb	Ayam Cabe Garam
+20000	b126f224-e7e4-41ba-ae5e-b5c677a94773	5870986d-a73b-47e3-a0f7-96663da9bcdb	Ayam Teriyaki
+15000	ce26dbe9-feed-4dd8-b9f4-82e641072007	5870986d-a73b-47e3-a0f7-96663da9bcdb	Nasi Goreng Ayam
+16000	2488151c-4398-4256-b483-67fa50b688b3	5870986d-a73b-47e3-a0f7-96663da9bcdb	Nasi Goreng Seafood
 \.
 
 
@@ -197,10 +206,9 @@ COPY public.product (price, id, merchant_id, product_name) FROM stdin;
 -- Data for Name: users; Type: TABLE DATA; Schema: public; Owner: postgres
 --
 
-COPY public.users (id, email_address, name, password, username) FROM stdin;
-d4adc60e-ac01-4703-b47a-e9265d4a8dc6	lckmnzans@gmail.com	Lukman Sanusi	123	lckmnzans
-9c939d58-daca-4d9b-90e8-4583cbd3f48b	synmmmo@mail.co	Sinonia Caitlyn	sin123	sinonia
-ab860ed8-c2cf-49fe-977f-df74fa4fdf01	taucho@youmail.com	Hu Tao	666	wangshen
+COPY public.users (deleted, id, email_address, name, password, username) FROM stdin;
+f	ff15ed0d-1d69-4ae9-a9a1-7152259d7307	lckmnzans@mail.co	Lukman Sanusi	123	lckmnzans
+f	b7eb6520-7c31-405d-92e2-26b57635da9f	sayloveu@mail.co	Shaina Oline	1212	shayooo
 \.
 
 
@@ -242,6 +250,14 @@ ALTER TABLE ONLY public.product
 
 ALTER TABLE ONLY public.users
     ADD CONSTRAINT users_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: users users_username_key; Type: CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.users
+    ADD CONSTRAINT users_username_key UNIQUE (username);
 
 
 --

@@ -6,7 +6,7 @@ import com.synrgy.binarfud.Binarfud.model.Users;
 import java.util.List;
 
 public interface OrderService {
-    void insertOrder(Order order);
+    Order insertOrder(Order order);
 
     Order getOrder(String orderId);
 
