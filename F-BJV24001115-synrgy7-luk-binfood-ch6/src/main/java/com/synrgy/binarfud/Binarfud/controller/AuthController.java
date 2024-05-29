@@ -9,11 +9,13 @@ import com.synrgy.binarfud.Binarfud.security.service.UserDetailsImpl;
 import org.apache.commons.collections.map.HashedMap;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.HashMap;
@@ -24,6 +26,7 @@ import java.util.stream.Collectors;
 @RestController
 @RequestMapping("auth")
 public class AuthController {
+
     @Autowired
     AuthenticationManager authenticationManager;
 
@@ -31,7 +34,7 @@ public class AuthController {
     JwtUtils jwtUtils;
 
     @PostMapping("login")
-    public ResponseEntity<?> authenticate(@RequestBody LoginRequestDto loginRequest) {
+    public ResponseEntity<Response> authenticate(@RequestBody LoginRequestDto loginRequest) {
         Authentication authentication = authenticationManager
                 .authenticate(new UsernamePasswordAuthenticationToken(loginRequest.getUsername(), loginRequest.getPassword())
                 );
@@ -43,6 +46,6 @@ public class AuthController {
                 .toList();
 
         JwtResponse jwtResponse = new JwtResponse(jwt, userDetails.getUsername(), roles);
-        return new ResponseEntity<>(new Response.Success(jwtResponse), HttpStatus.OK);
+        return new ResponseEntity<>(new Response.Success(jwtResponse), HttpStatus.CREATED);
     }
 }

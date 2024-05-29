@@ -6,6 +6,7 @@ import com.synrgy.binarfud.Binarfud.payload.UserDto;
 import org.modelmapper.ModelMapper;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.UUID;
@@ -19,9 +20,12 @@ public class UserController {
     final
     UserUtil userUtil;
 
-    public UserController(UserUtil userUtil, ModelMapper modelMapper) {
+    final PasswordEncoder passwordEncoder;
+
+    public UserController(UserUtil userUtil, ModelMapper modelMapper, PasswordEncoder passwordEncoder) {
         this.userUtil = userUtil;
         this.modelMapper = modelMapper;
+        this.passwordEncoder = passwordEncoder;
     }
 
     @GetMapping("{username}")
@@ -40,7 +44,7 @@ public class UserController {
         Users user;
         try {
             user = modelMapper.map(userDto, Users.class);
-            userUtil.createUser(user.getName(), user.getUsername(), user.getEmailAddress(), user.getPassword());
+            userUtil.createUser(user.getName(), user.getUsername(), user.getEmailAddress(), passwordEncoder.encode(user.getPassword()));
             return ResponseEntity.ok(new Response.SuccessNull("user sukses dibuat"));
         } catch (RuntimeException e) {
             return new ResponseEntity<>(new Response.Error(e.getMessage()), HttpStatus.OK);

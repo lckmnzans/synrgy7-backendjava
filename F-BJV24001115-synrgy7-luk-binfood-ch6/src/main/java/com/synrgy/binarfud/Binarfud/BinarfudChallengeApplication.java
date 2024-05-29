@@ -9,7 +9,7 @@ import org.springframework.context.annotation.Bean;
 public class BinarfudChallengeApplication {
 
 	public static void main(String[] args) {
-		SpringApplication.run(BinarfudChallengeApplication.class);
+		SpringApplication.run(BinarfudChallengeApplication.class, args);
 	}
 
 	@Bean

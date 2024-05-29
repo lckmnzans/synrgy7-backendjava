@@ -1,7 +1,6 @@
 package com.synrgy.binarfud.Binarfud.security;
 
 import com.synrgy.binarfud.Binarfud.security.Jwt.JwtAuthTokenFilter;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpMethod;
@@ -33,7 +32,8 @@ public class SecurityConfig {
                 .authorizeHttpRequests(auth ->
                     auth
                         .requestMatchers(HttpMethod.GET, "api/merchant").permitAll()
-                        .requestMatchers("auth/login").permitAll()
+                        .requestMatchers("auth/**").permitAll()
+                        .requestMatchers(HttpMethod.POST,"api/user").permitAll()
                         .anyRequest().authenticated()
                 );
 
@@ -51,7 +51,7 @@ public class SecurityConfig {
     }
 
     @Bean
-    public AuthenticationProvider authenticationProvider() {
+    public DaoAuthenticationProvider authenticationProvider() {
         DaoAuthenticationProvider authProvider = new DaoAuthenticationProvider();
         authProvider.setPasswordEncoder(passwordEncoder());
         authProvider.setUserDetailsService(userDetailsService);
