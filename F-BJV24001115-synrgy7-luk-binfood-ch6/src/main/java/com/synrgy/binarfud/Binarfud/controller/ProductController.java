@@ -8,6 +8,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.modelmapper.ModelMapper;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -32,6 +33,7 @@ public class ProductController {
     }
 
     @GetMapping()
+    @PreAuthorize("hasRole('ROLE_CUSTOMER')")
     public ResponseEntity<Response> getAllProducts(
             @RequestParam("id") @Nullable String merchantId,
             @RequestParam("open") @Nullable Boolean isOpen
