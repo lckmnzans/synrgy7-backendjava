@@ -8,6 +8,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.modelmapper.ModelMapper;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.annotation.Secured;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
@@ -33,7 +34,7 @@ public class ProductController {
     }
 
     @GetMapping()
-    @PreAuthorize("hasRole('ROLE_CUSTOMER')")
+    @Secured({"CUSTOMER","MERCHANT"})
     public ResponseEntity<Response> getAllProducts(
             @RequestParam("id") @Nullable String merchantId,
             @RequestParam("open") @Nullable Boolean isOpen
@@ -97,6 +98,7 @@ public class ProductController {
     }
 
     @PutMapping("{id}")
+    @PreAuthorize("hasRole('MERCHANT')")
     public ResponseEntity<Response> update(@PathVariable("id") String id, @RequestBody ProductDto productDto) {
         Product product;
         try {
