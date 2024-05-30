@@ -13,6 +13,8 @@ public interface UserService {
 
     Users getUserById(String id);
 
+    Users getUserByEmail(String email);
+
     List<Users> getUsersByUsernameLike(String s);
 
     void hardDeleteUser(Users user);
@@ -20,5 +22,7 @@ public interface UserService {
     void softDeleteUser(Users user);
 
     Users updateUserData(Users user);
+
+    void createUserPostLogin(String username, String email);
 
 }

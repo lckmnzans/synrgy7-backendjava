@@ -1,19 +1,23 @@
 package com.synrgy.binarfud.Binarfud.service;
 
 import com.synrgy.binarfud.Binarfud.model.Users;
+import com.synrgy.binarfud.Binarfud.repository.RoleRepository;
 import com.synrgy.binarfud.Binarfud.repository.UsersRepository;
+import com.synrgy.binarfud.Binarfud.security.AccessRole;
+import com.synrgy.binarfud.Binarfud.security.Role;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.userdetails.User;
 import org.springframework.stereotype.Service;
 
-import java.util.Collections;
-import java.util.List;
-import java.util.Optional;
-import java.util.UUID;
+import java.util.*;
 
 @Service
 @Slf4j
 public class UserServiceImpl implements UserService {
+    @Autowired
+    RoleRepository roleRepository;
+
     @Autowired
     UsersRepository usersRepository;
 
@@ -52,6 +56,15 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
+    public Users getUserByEmail(String email) {
+        Optional<Users> user = usersRepository.findByEmailAddress(email);
+        if (user.isEmpty()) {
+            throw new RuntimeException("data with email \""+email+"\" does not exist");
+        }
+        return user.get();
+    }
+
+    @Override
     public List<Users> getUsersByUsernameLike(String s) {
         List<Users> users = usersRepository.findByUsernameLike("%"+s+"%");
         if (users.isEmpty()) {
@@ -82,6 +95,27 @@ public class UserServiceImpl implements UserService {
         usersRepository.save(oldUser);
         log.info("User successfully updated");
         return oldUser;
+    }
+
+    @Override
+    public void createUserPostLogin(String username, String email) {
+        Role role = roleRepository.findByRole(AccessRole.ROLE_CUSTOMER);
+        Set<Role> roles = new HashSet<>(Collections.singletonList(role));
+
+        Users user = null;
+        try {
+             user = getUserByEmail(email);
+        } catch (RuntimeException e) {
+            log.error(e.getMessage());
+        }
+        if (user == null) {
+            user = Users.builder()
+                    .username(username)
+                    .emailAddress(email)
+                    .roles(roles)
+                    .build();
+            usersRepository.save(user);
+        }
     }
 
     private Users getUserNoException(UUID id) {

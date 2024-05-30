@@ -3,6 +3,7 @@ package com.synrgy.binarfud.Binarfud.model;
 import com.synrgy.binarfud.Binarfud.security.Role;
 import jakarta.persistence.*;
 import lombok.*;
+import lombok.experimental.Accessors;
 
 import java.util.*;
 
@@ -11,6 +12,7 @@ import java.util.*;
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
+@Accessors(chain = true)
 @Entity
 @Table(name = "users")
 public class Users {
