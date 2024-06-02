@@ -51,8 +51,7 @@ public class SecurityConfig implements WebMvcConfigurer {
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
         http
             .csrf(csrf -> csrf.disable())
-                .cors(Customizer.withDefaults())
-            .exceptionHandling(exception -> exception.authenticationEntryPoint(authEntryPointJwt))
+            .cors(Customizer.withDefaults())
             .authorizeHttpRequests(auth ->
                 auth
                     .requestMatchers(HttpMethod.GET, "api/merchant").permitAll()
@@ -65,7 +64,6 @@ public class SecurityConfig implements WebMvcConfigurer {
             .addFilterBefore(authTokenFilter(), UsernamePasswordAuthenticationFilter.class)
             .formLogin(Customizer.withDefaults())
             .oauth2Login(oauth2 -> oauth2
-                    .loginPage("/login")
                 .userInfoEndpoint(userInfo -> userInfo
                     .oidcUserService(this.oidcUserService())
                 )
@@ -112,7 +110,7 @@ public class SecurityConfig implements WebMvcConfigurer {
     @Bean
     public CorsConfigurationSource corsConfigurationSource() {
         CorsConfiguration configuration = new CorsConfiguration();
-        configuration.setAllowedOrigins(Arrays.asList("https://kompas.com", "https://localhost:4200"));
+        configuration.setAllowedOrigins(Arrays.asList("https://kompas.com", "http://localhost:8000"));
         configuration.setAllowedMethods(Arrays.asList("GET", "POST", "PUT", "DELETE", "PATCH"));
         configuration.setAllowedHeaders(Arrays.asList("Authorization"));
         configuration.setAllowCredentials(true);
