@@ -1,5 +1,6 @@
 package com.synrgy.binarfud.Binarfud.security;
 
+import com.synrgy.binarfud.Binarfud.security.Jwt.AuthEntryPointJwt;
 import com.synrgy.binarfud.Binarfud.security.Jwt.JwtAuthTokenFilter;
 import com.synrgy.binarfud.Binarfud.service.UserService;
 import org.ietf.jgss.Oid;
@@ -9,14 +10,11 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpMethod;
 import org.springframework.http.MediaType;
 import org.springframework.security.authentication.AuthenticationManager;
-import org.springframework.security.authentication.AuthenticationProvider;
 import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
 import org.springframework.security.config.Customizer;
 import org.springframework.security.config.annotation.authentication.configuration.AuthenticationConfiguration;
 import org.springframework.security.config.annotation.method.configuration.EnableMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
-import org.springframework.security.config.http.SessionCreationPolicy;
-import org.springframework.security.core.Authentication;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -24,21 +22,28 @@ import org.springframework.security.oauth2.client.oidc.userinfo.OidcUserService;
 import org.springframework.security.oauth2.core.oidc.user.DefaultOidcUser;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
+import org.springframework.web.cors.CorsConfiguration;
+import org.springframework.web.cors.CorsConfigurationSource;
+import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 import org.springframework.web.servlet.config.annotation.ContentNegotiationConfigurer;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
+
+import java.util.Arrays;
 
 import static com.synrgy.binarfud.Binarfud.security.AccessRole.ROLE_CUSTOMER;
 
 @Configuration
 @EnableMethodSecurity
 public class SecurityConfig implements WebMvcConfigurer {
+    final AuthEntryPointJwt authEntryPointJwt;
     final
     UserDetailsService userDetailsService;
 
     @Autowired
     UserService userService;
 
-    public SecurityConfig(UserDetailsService userDetailsService) {
+    public SecurityConfig(AuthEntryPointJwt authEntryPointJwt, UserDetailsService userDetailsService) {
+        this.authEntryPointJwt = authEntryPointJwt;
         this.userDetailsService = userDetailsService;
     }
 
@@ -46,6 +51,8 @@ public class SecurityConfig implements WebMvcConfigurer {
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
         http
             .csrf(csrf -> csrf.disable())
+                .cors(Customizer.withDefaults())
+            .exceptionHandling(exception -> exception.authenticationEntryPoint(authEntryPointJwt))
             .authorizeHttpRequests(auth ->
                 auth
                     .requestMatchers(HttpMethod.GET, "api/merchant").permitAll()
@@ -58,6 +65,7 @@ public class SecurityConfig implements WebMvcConfigurer {
             .addFilterBefore(authTokenFilter(), UsernamePasswordAuthenticationFilter.class)
             .formLogin(Customizer.withDefaults())
             .oauth2Login(oauth2 -> oauth2
+                    .loginPage("/login")
                 .userInfoEndpoint(userInfo -> userInfo
                     .oidcUserService(this.oidcUserService())
                 )
@@ -99,6 +107,19 @@ public class SecurityConfig implements WebMvcConfigurer {
     public OidcUserService oidcUserService() {
         OidcUserService delegate = new OidcUserService();
         return delegate;
+    }
+
+    @Bean
+    public CorsConfigurationSource corsConfigurationSource() {
+        CorsConfiguration configuration = new CorsConfiguration();
+        configuration.setAllowedOrigins(Arrays.asList("https://kompas.com", "https://localhost:4200"));
+        configuration.setAllowedMethods(Arrays.asList("GET", "POST", "PUT", "DELETE", "PATCH"));
+        configuration.setAllowedHeaders(Arrays.asList("Authorization"));
+        configuration.setAllowCredentials(true);
+
+        UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
+        source.registerCorsConfiguration("/**", configuration);
+        return source;
     }
 
     @Override
