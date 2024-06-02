@@ -51,6 +51,7 @@ public class SecurityConfig implements WebMvcConfigurer {
                     .requestMatchers(HttpMethod.GET, "api/merchant").permitAll()
                     .requestMatchers("/auth/login").permitAll()
                     .requestMatchers(HttpMethod.POST,"api/user").permitAll()
+                    .requestMatchers("/auth/test/**").permitAll()
                     .anyRequest().authenticated()
             )
             .authenticationProvider(authenticationProvider())

@@ -5,6 +5,7 @@ import com.synrgy.binarfud.Binarfud.payload.Response;
 import com.synrgy.binarfud.Binarfud.security.Jwt.JwtResponse;
 import com.synrgy.binarfud.Binarfud.security.Jwt.JwtUtils;
 import com.synrgy.binarfud.Binarfud.security.service.UserDetailsImpl;
+import com.synrgy.binarfud.Binarfud.service.MailService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -29,6 +30,9 @@ public class AuthController {
 
     @Autowired
     JwtUtils jwtUtils;
+
+    @Autowired
+    MailService mailService;
 
     @PostMapping("login")
     public ResponseEntity<Response> authenticate(@RequestBody LoginRequestDto loginRequest) {
@@ -66,5 +70,12 @@ public class AuthController {
 
         JwtResponse jwtResponse = new JwtResponse(jwt, oidcUser.getPreferredUsername(), roles);
         return new ResponseEntity<>(new Response.Success(jwtResponse), HttpStatus.CREATED);
+    }
+
+
+    @GetMapping("/test/mail")
+    public String sendMail() {
+        mailService.sendMail("lckmnzans@gmail.com", "subject test", "Hello World");
+        return "Mail sent";
     }
 }
