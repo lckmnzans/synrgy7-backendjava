@@ -54,9 +54,10 @@ public class SecurityConfig implements WebMvcConfigurer {
             .cors(Customizer.withDefaults())
             .authorizeHttpRequests(auth ->
                 auth
-                    .requestMatchers(HttpMethod.GET, "api/merchant").permitAll()
+                    .requestMatchers(HttpMethod.GET, "/api/merchant").permitAll()
                     .requestMatchers("/auth/login").permitAll()
-                    .requestMatchers(HttpMethod.POST,"api/user").permitAll()
+                    .requestMatchers(HttpMethod.POST,"/api/user").permitAll()
+                    .requestMatchers(HttpMethod.GET, "/message/**").permitAll()
                     .requestMatchers("/auth/test/**").permitAll()
                     .anyRequest().authenticated()
             )
