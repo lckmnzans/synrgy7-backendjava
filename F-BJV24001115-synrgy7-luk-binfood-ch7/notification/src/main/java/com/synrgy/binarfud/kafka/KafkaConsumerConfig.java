@@ -1,4 +1,4 @@
-package com.synrgy.binarfud.Binarfud.kafka;
+package com.synrgy.binarfud.kafka;
 
 import java.util.HashMap;
 import java.util.Map;

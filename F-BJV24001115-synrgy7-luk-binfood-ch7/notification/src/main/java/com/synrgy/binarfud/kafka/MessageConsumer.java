@@ -1,4 +1,4 @@
-package com.synrgy.binarfud.Binarfud.kafka;
+package com.synrgy.binarfud.kafka;
 
 import org.springframework.kafka.annotation.KafkaListener;
 import org.springframework.stereotype.Component;
