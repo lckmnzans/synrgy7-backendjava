@@ -1,10 +1,10 @@
 package com.synrgy.binarfud.Binarfud.controller;
 
+import com.synrgy.binarfud.Binarfud.controller.util.MerchantUtil;
 import com.synrgy.binarfud.Binarfud.model.Merchant;
 import com.synrgy.binarfud.Binarfud.payload.MerchantDto;
 import com.synrgy.binarfud.Binarfud.payload.Response;
 import jakarta.annotation.Nullable;
-import lombok.extern.slf4j.Slf4j;
 import org.modelmapper.ModelMapper;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -19,7 +19,6 @@ import java.util.Map;
 
 @RestController
 @RequestMapping("api/merchant")
-@Slf4j
 public class MerchantController {
     final
     ModelMapper modelMapper;

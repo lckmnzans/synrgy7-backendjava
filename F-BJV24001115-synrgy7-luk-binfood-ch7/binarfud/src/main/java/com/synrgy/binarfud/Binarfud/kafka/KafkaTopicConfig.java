@@ -8,7 +8,7 @@ public class KafkaTopicConfig {
     @Bean
     public NewTopic messagNewTopic() {
         return TopicBuilder
-            .name("order")
+            .name("order-status")
             .build();
     }
 }

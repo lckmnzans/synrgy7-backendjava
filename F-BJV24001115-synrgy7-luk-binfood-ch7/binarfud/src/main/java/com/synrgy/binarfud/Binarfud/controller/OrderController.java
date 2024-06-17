@@ -1,5 +1,8 @@
 package com.synrgy.binarfud.Binarfud.controller;
 
+import com.synrgy.binarfud.Binarfud.controller.util.OrderUtil;
+import com.synrgy.binarfud.Binarfud.controller.util.UserUtil;
+import com.synrgy.binarfud.Binarfud.kafka.MessageProducer;
 import com.synrgy.binarfud.Binarfud.model.Order;
 import com.synrgy.binarfud.Binarfud.model.OrderDetail;
 import com.synrgy.binarfud.Binarfud.model.Users;
@@ -8,6 +11,7 @@ import com.synrgy.binarfud.Binarfud.payload.OrderDto;
 import com.synrgy.binarfud.Binarfud.payload.Response;
 import com.synrgy.binarfud.Binarfud.service.InvoiceService;
 import org.modelmapper.ModelMapper;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.ByteArrayResource;
 import org.springframework.core.io.Resource;
 import org.springframework.http.*;
@@ -31,6 +35,9 @@ public class OrderController {
     final
     InvoiceService invoiceService;
 
+    @Autowired
+    MessageProducer messageProducer;
+
     public OrderController(ModelMapper modelMapper, OrderUtil orderUtil, UserUtil userUtil, InvoiceService invoiceService) {
         this.modelMapper = modelMapper;
         this.orderUtil = orderUtil;
@@ -45,6 +52,7 @@ public class OrderController {
                 .toList();
         try {
             Order order = orderUtil.createOrder(orderDto.getUserName(), orderDto.getDestinationAddress(), orderDetailList);
+            messageProducer.sendMessage("order-status", "Order with orderId:"+ order.getId() + " successfully created");
             return ResponseEntity.ok(new Response.Success(modelMapper.map(order, OrderDto.class)));
         } catch (RuntimeException e) {
             return new ResponseEntity<>(new Response.Error(e.getLocalizedMessage()), HttpStatus.OK);

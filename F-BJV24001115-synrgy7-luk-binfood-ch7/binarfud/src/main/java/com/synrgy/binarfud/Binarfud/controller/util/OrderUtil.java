@@ -1,4 +1,4 @@
-package com.synrgy.binarfud.Binarfud.controller;
+package com.synrgy.binarfud.Binarfud.controller.util;
 
 import com.synrgy.binarfud.Binarfud.model.Order;
 import com.synrgy.binarfud.Binarfud.model.OrderDetail;
