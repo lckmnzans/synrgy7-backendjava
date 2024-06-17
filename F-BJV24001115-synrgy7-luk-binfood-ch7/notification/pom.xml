@@ -11,7 +11,7 @@
 	<groupId>com.synrgy</groupId>
 	<artifactId>binarfud</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
-	<name>KafkaNotification</name>
+	<name>Notification</name>
 	<description>Notification services using Kafka</description>
 	<properties>
 		<java.version>17</java.version>
@@ -43,7 +43,7 @@
 				<groupId>org.springframework.boot</groupId>
 				<artifactId>spring-boot-maven-plugin</artifactId>
 				<configuration>
-					<mainClass>com.synrgy.binarfud.KafkaNotificationApplication</mainClass>
+					<mainClass>com.synrgy.binarfud.NotificationApplication</mainClass>
 				</configuration>
 			</plugin>
 		</plugins>
