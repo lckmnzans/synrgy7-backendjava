@@ -1,4 +1,4 @@
-package com.synrgy.binarfud.model;
+package com.synrgy.microservices.model;
 
 import lombok.Data;
 

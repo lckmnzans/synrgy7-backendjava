@@ -1,4 +1,4 @@
-package com.synrgy.binarfud.kafka;
+package com.synrgy.microservices.kafka;
 
 import java.util.LinkedHashMap;
 import java.util.Map;

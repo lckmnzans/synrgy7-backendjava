@@ -1,4 +1,4 @@
-package com.synrgy.binarfud.controller;
+package com.synrgy.microservices.controller;
 
 import org.springframework.stereotype.Component;
 
@@ -8,7 +8,7 @@ import com.corundumstudio.socketio.SocketIOServer;
 import com.corundumstudio.socketio.listener.ConnectListener;
 import com.corundumstudio.socketio.listener.DataListener;
 import com.corundumstudio.socketio.listener.DisconnectListener;
-import com.synrgy.binarfud.model.Message;
+import com.synrgy.microservices.model.Message;
 
 @Component
 public class NotificationController {

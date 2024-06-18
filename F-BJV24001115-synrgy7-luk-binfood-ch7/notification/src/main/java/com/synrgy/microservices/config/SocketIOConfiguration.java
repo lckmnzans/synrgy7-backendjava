@@ -1,4 +1,4 @@
-package com.synrgy.binarfud.config;
+package com.synrgy.microservices.config;
 
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
