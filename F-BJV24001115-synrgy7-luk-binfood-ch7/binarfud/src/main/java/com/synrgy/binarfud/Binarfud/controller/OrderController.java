@@ -52,7 +52,8 @@ public class OrderController {
                 .toList();
         try {
             Order order = orderUtil.createOrder(orderDto.getUserName(), orderDto.getDestinationAddress(), orderDetailList);
-            messageProducer.sendMessage("order-status", "Order with orderId:"+ order.getId() + " successfully created");
+            String message = messageProducer.messageAssembler(order.getUser().getUsername(), "order with orderId "+ order.getId().toString());
+            messageProducer.sendMessage("order-status", message);
             return ResponseEntity.ok(new Response.Success(modelMapper.map(order, OrderDto.class)));
         } catch (RuntimeException e) {
             return new ResponseEntity<>(new Response.Error(e.getLocalizedMessage()), HttpStatus.OK);
