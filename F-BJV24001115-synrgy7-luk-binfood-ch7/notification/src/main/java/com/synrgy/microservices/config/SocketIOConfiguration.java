@@ -26,8 +26,12 @@ public class SocketIOConfiguration {
         socketIOServer = new SocketIOServer(config);
         socketIOServer.start();
 
-        socketIOServer.addConnectListener(socketIOClient -> 
-            System.out.println("A new client is connected to "+ socketIOClient.getSessionId())
+        socketIOServer.addConnectListener(socketIOClient -> {
+            System.out.println("A new client is connected to " + socketIOClient.getSessionId());
+        });
+
+        socketIOServer.addDisconnectListener(socketIOClient ->
+            System.out.println("A new client is disconnected from " + socketIOClient.getSessionId())
         );
 
         return socketIOServer;

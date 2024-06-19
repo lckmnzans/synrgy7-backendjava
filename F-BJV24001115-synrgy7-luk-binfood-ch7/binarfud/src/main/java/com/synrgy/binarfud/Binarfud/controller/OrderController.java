@@ -52,7 +52,7 @@ public class OrderController {
                 .toList();
         try {
             Order order = orderUtil.createOrder(orderDto.getUserName(), orderDto.getDestinationAddress(), orderDetailList);
-            String message = messageProducer.messageAssembler(order.getUser().getUsername(), "order with orderId "+ order.getId().toString());
+            String message = messageProducer.messageAssembler(order.getUser().getId().toString(), "order with orderId "+ order.getId().toString());
             messageProducer.sendMessage("order-status", message);
             return ResponseEntity.ok(new Response.Success(modelMapper.map(order, OrderDto.class)));
         } catch (RuntimeException e) {
