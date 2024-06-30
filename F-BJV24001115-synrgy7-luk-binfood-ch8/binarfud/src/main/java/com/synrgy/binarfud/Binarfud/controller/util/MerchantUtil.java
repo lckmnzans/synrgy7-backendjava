@@ -3,7 +3,6 @@ package com.synrgy.binarfud.Binarfud.controller.util;
 import com.synrgy.binarfud.Binarfud.model.Merchant;
 import com.synrgy.binarfud.Binarfud.model.Order;
 import com.synrgy.binarfud.Binarfud.model.OrderDetail;
-import com.synrgy.binarfud.Binarfud.service.JasperService;
 import com.synrgy.binarfud.Binarfud.service.MerchantService;
 import com.synrgy.binarfud.Binarfud.service.OrderService;
 import jakarta.annotation.Nullable;
@@ -18,12 +17,10 @@ import java.util.List;
 public class MerchantUtil {
     private final MerchantService merchantService;
     private final OrderService orderService;
-    private final JasperService jasperService;
 
-    public MerchantUtil(MerchantService merchantService, OrderService orderService, JasperService jasperService) {
+    public MerchantUtil(MerchantService merchantService, OrderService orderService) {
         this.merchantService = merchantService;
         this.orderService = orderService;
-        this.jasperService = jasperService;
     }
 
     public Merchant createMerchant(String merchantName, String merchantLocation) {

@@ -1,9 +1,6 @@
 package com.synrgy.binarfud.Binarfud.security.Jwt;
 
-import com.ctc.wstx.util.StringUtil;
-import com.synrgy.binarfud.Binarfud.security.SecurityConfig;
 import com.synrgy.binarfud.Binarfud.security.service.UserDetailsServiceImpl;
-import io.jsonwebtoken.Jwt;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
@@ -12,7 +9,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
-import org.springframework.security.web.authentication.WebAuthenticationDetails;
 import org.springframework.security.web.authentication.WebAuthenticationDetailsSource;
 import org.springframework.util.StringUtils;
 import org.springframework.web.filter.OncePerRequestFilter;

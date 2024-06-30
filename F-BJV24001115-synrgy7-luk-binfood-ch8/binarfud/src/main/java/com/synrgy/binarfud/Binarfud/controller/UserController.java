@@ -1,5 +1,6 @@
-package com.synrgy.binarfud.Binarfud.controller.util;
+package com.synrgy.binarfud.Binarfud.controller;
 
+import com.synrgy.binarfud.Binarfud.controller.util.UserUtil;
 import com.synrgy.binarfud.Binarfud.model.Users;
 import com.synrgy.binarfud.Binarfud.payload.Response;
 import com.synrgy.binarfud.Binarfud.payload.UserDto;

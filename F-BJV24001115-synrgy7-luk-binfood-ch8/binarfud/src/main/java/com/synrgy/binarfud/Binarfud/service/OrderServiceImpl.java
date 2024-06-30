@@ -6,6 +6,7 @@ import com.synrgy.binarfud.Binarfud.repository.OrderRepository;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.*;
 
@@ -15,6 +16,7 @@ public class OrderServiceImpl implements OrderService {
     @Autowired
     OrderRepository orderRepository;
 
+    @Transactional
     @Override
     public Order insertOrder(Order order) {
         order = orderRepository.save(order);

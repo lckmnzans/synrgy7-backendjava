@@ -3,7 +3,6 @@ package com.synrgy.binarfud.Binarfud.security;
 import com.synrgy.binarfud.Binarfud.security.Jwt.AuthEntryPointJwt;
 import com.synrgy.binarfud.Binarfud.security.Jwt.JwtAuthTokenFilter;
 import com.synrgy.binarfud.Binarfud.service.UserService;
-import org.ietf.jgss.Oid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -29,8 +28,6 @@ import org.springframework.web.servlet.config.annotation.ContentNegotiationConfi
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 
 import java.util.Arrays;
-
-import static com.synrgy.binarfud.Binarfud.security.AccessRole.ROLE_CUSTOMER;
 
 @Configuration
 @EnableMethodSecurity
@@ -63,7 +60,6 @@ public class SecurityConfig implements WebMvcConfigurer {
             )
             .authenticationProvider(authenticationProvider())
             .addFilterBefore(authTokenFilter(), UsernamePasswordAuthenticationFilter.class)
-            .formLogin(Customizer.withDefaults())
             .oauth2Login(oauth2 -> oauth2
                 .userInfoEndpoint(userInfo -> userInfo
                     .oidcUserService(this.oidcUserService())
