@@ -25,4 +25,16 @@ public class MessageProducer {
         messageBody.append("}");
         return messageBody.toString();
     }
+
+    public String setData(String key, String value) {
+        return setKey(key)+setValue(value);
+    }
+
+    private String setKey(String key) {
+        return "\""+key+"\":";
+    }
+
+    private String setValue(String value) {
+        return "\""+value+"\"";
+    }
 }

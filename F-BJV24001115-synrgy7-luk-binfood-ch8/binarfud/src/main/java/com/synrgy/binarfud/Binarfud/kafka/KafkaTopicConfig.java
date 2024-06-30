@@ -11,4 +11,11 @@ public class KafkaTopicConfig {
             .name("order-status")
             .build();
     }
+
+    @Bean
+    public NewTopic notifNewTopic() {
+        return TopicBuilder
+            .name("promo-notif")
+            .build();
+    }
 }
