@@ -1,0 +1,93 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Created with Jaspersoft Studio version 6.21.2.final using JasperReports Library version 6.21.2-8434a0bd7c3bbc37cbf916f2968d35e4b165821a  -->
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="item-report" pageWidth="320" pageHeight="790" columnWidth="300" leftMargin="10" rightMargin="10" topMargin="20" bottomMargin="20" uuid="b6713798-c0a0-43ab-8b2e-7bf437b3d797">
+    <parameter name="username" class="java.lang.String" isForPrompting="false"/>
+    <parameter name="orderId" class="java.util.UUID" isForPrompting="false"/>
+    <parameter name="orderTime" class="java.lang.String" isForPrompting="false"/>
+    <field name="id" class="java.util.UUID"/>
+    <field name="product" class="com.synrgy.binarfud.Binarfud.model.Product"/>
+    <field name="quantity" class="java.lang.Integer"/>
+    <field name="totalPrice" class="java.lang.Double"/>
+    <title>
+        <band height="91" splitType="Stretch">
+            <staticText>
+                <reportElement x="0" y="0" width="300" height="30" uuid="04e10beb-9d99-4db7-9d75-6ca0cf30872d">
+                    <property name="com.jaspersoft.studio.unit.height" value="px"/>
+                </reportElement>
+                <textElement textAlignment="Center">
+                    <font size="18" isBold="true"/>
+                </textElement>
+                <text><![CDATA[B I N A R F U D]]></text>
+            </staticText>
+            <line>
+                <reportElement x="0" y="25" width="300" height="1" uuid="b2d30301-b9c8-4b72-b1e6-9cc52af0e001"/>
+                <graphicElement>
+                    <pen lineStyle="Dashed"/>
+                </graphicElement>
+            </line>
+            <staticText>
+                <reportElement x="0" y="30" width="90" height="20" uuid="04e10beb-9d99-4db7-9d75-6ca0cf30872d"/>
+                <textElement textAlignment="Left">
+                    <font size="10"/>
+                </textElement>
+                <text><![CDATA[Kode Pesanan]]></text>
+            </staticText>
+            <textField>
+                <reportElement x="90" y="30" width="210" height="20" uuid="65a2b3e1-8a54-47e6-ac5a-42e69ce55ef7"/>
+                <textElement textAlignment="Right"/>
+                <textFieldExpression><![CDATA[$P{orderId}]]></textFieldExpression>
+            </textField>
+            <staticText>
+                <reportElement x="0" y="50" width="90" height="20" uuid="04e10beb-9d99-4db7-9d75-6ca0cf30872d"/>
+                <textElement textAlignment="Left">
+                    <font size="10"/>
+                </textElement>
+                <text><![CDATA[Waktu]]></text>
+            </staticText>
+            <textField>
+                <reportElement x="90" y="50" width="210" height="20" uuid="65a2b3e1-8a54-47e6-ac5a-42e69ce55ef7"/>
+                <textElement textAlignment="Right"/>
+                <textFieldExpression><![CDATA[$P{orderTime}]]></textFieldExpression>
+            </textField>
+            <staticText>
+                <reportElement x="0" y="70" width="90" height="20" uuid="04e10beb-9d99-4db7-9d75-6ca0cf30872d"/>
+                <textElement textAlignment="Left">
+                    <font size="10"/>
+                </textElement>
+                <text><![CDATA[Pelanggan]]></text>
+            </staticText>
+            <textField>
+                <reportElement x="90" y="70" width="210" height="20" uuid="65a2b3e1-8a54-47e6-ac5a-42e69ce55ef7"/>
+                <textElement textAlignment="Right"/>
+                <textFieldExpression><![CDATA[$P{username}]]></textFieldExpression>
+            </textField>
+            <line>
+                <reportElement x="0" y="90" width="300" height="1" uuid="b2d30301-b9c8-4b72-b1e6-9cc52af0e001"/>
+                <graphicElement>
+                    <pen lineStyle="Dashed"/>
+                </graphicElement>
+            </line>
+        </band>
+    </title>
+    <detail>
+        <band height="50" splitType="Stretch">
+            <property name="com.jaspersoft.studio.layout" value="com.jaspersoft.studio.editor.layout.FreeLayout"/>
+            <property name="com.jaspersoft.studio.unit.height" value="px"/>
+            <textField textAdjust="StretchHeight" isBlankWhenNull="true">
+                <reportElement x="0" y="10" width="200" height="20" uuid="f908967d-04cd-463d-b408-320b2f893074"/>
+                <textElement textAlignment="Left" verticalAlignment="Middle"/>
+                <textFieldExpression><![CDATA[$F{product}.getProductName()]]></textFieldExpression>
+            </textField>
+            <textField textAdjust="StretchHeight" isBlankWhenNull="true">
+                <reportElement x="200" y="10" width="100" height="20" uuid="e9a436df-efa3-4365-9558-578c8a8b4621"/>
+                <textElement textAlignment="Right" verticalAlignment="Middle"/>
+                <textFieldExpression><![CDATA[$F{quantity}]]></textFieldExpression>
+            </textField>
+            <textField>
+                <reportElement x="200" y="30" width="100" height="20" uuid="a2511204-bdd8-4eec-af59-31480de4b50b"/>
+                <textElement textAlignment="Right"/>
+                <textFieldExpression><![CDATA[$F{totalPrice}]]></textFieldExpression>
+            </textField>
+        </band>
+    </detail>
+</jasperReport>
